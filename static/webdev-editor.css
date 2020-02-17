@@ -1,0 +1,16 @@
+.acos-webdev-editor .editor {
+  height: 200px;
+  font-size: 18px;
+}
+.acos-webdev-editor .output iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+  border-top: 2px solid grey;
+}
+
+body.execute {
+  background-color: gainsboro;
+  color: grey;
+  margin: 0;
+}

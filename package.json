@@ -1,0 +1,16 @@
+{
+  "name": "acos-webdev-editor",
+  "version": "0.1.0",
+  "description": "Exercise package using embedded code editor",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": {
+    "name": "Teemu Lehtinen"
+  },
+  "dependencies": {
+    "acos-webdev": "^0.1.1",
+    "nunjucks": "^3.1.3"
+  },
+  "license": "MIT"
+}
