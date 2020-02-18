@@ -20,6 +20,8 @@ ACOSWebdev.prototype.extendReset = function () {
   js.setMode('ace/mode/javascript');
   this.editor.setSession(js);
 
+  // TODO: listen and append edit data to log
+
   this.$editorOutput = this.$element.find('.exercise .output');
 
   if (this.config.executeAtStart) {
