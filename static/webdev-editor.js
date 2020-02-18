@@ -3,6 +3,7 @@
 "use strict";
 
 ACOSWebdev.prototype.extendReset = function () {
+  var self = this;
   this.editor = ace.edit(this.$element.find('.exercise .editor').get(0));
   this.editor.setOptions({
     theme: 'ace/theme/tomorrow_night_bright'
@@ -10,21 +11,58 @@ ACOSWebdev.prototype.extendReset = function () {
   this.editor.commands.addCommand({
     name: 'Execute',
     bindKey: { win: 'Ctrl-Enter', mac: 'Command-Enter' },
-    exec: this.editorExecute
+    exec: function () {
+      self.grade();
+    }
   });
 
-  var js = ace.createEditSession('console.log("foo");');
+  var js = ace.createEditSession(this.config.initialJs || '');
   js.setMode('ace/mode/javascript');
   this.editor.setSession(js);
 
   this.$editorOutput = this.$element.find('.exercise .output');
-  $('.run-button').on('click', this.editorExecute);
+
+  if (this.config.executeAtStart) {
+    this.extendGrade(undefined, function (r) {});
+  }
 };
 
-ACOSWebdev.prototype.editorExecute = function (event) {
-  if (event) {
-    event.preventDefault();
-  }
+ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
+  var self = this;
+  var accessor = {
+    code: function () {
+      return self.editor.getValue();
+    },
+    doc: function () {
+      return self.$editorOutput.find('iframe').get(0).contentWindow.document;
+    },
+    display: function () {
+      return this.doc().getElementById('display');
+    },
+    $res: function () {
+      return $(this.display()).find('li.res');
+    },
+    results: function () {
+      return this.$res().map(function () {
+        var $li = $(this);
+        return { $li: $li, result: $li.html(), args: JSON.parse($li.attr('data-args')) };
+      }).get();
+    },
+    testResults: function (max_points, test) {
+      return this.results().reduce(function (points, item, index) {
+        var p = test(index, item.args, item.result);
+        item.$li.addClass(p >= max_points ? 'success' : 'error');
+        return points + p;
+      }, 0);
+    }
+  };
+  this.editorExecute();
+  setTimeout(function () {
+    cb(self.config.points(self.$element, self.config, accessor));
+  }, 100);
+};
+
+ACOSWebdev.prototype.editorExecute = function () {
   var $iframe = $('<iframe src="about:blank"></iframe>');
   this.$editorOutput.empty().append($iframe);
   $iframe.get(0).contentWindow.contents = '<!DOCTYPE html>\n'
@@ -33,20 +71,10 @@ ACOSWebdev.prototype.editorExecute = function (event) {
     + '<link href="/static/webdev-editor/webdev-editor.css" rel="stylesheet">\n'
     + '<script src="/static/webdev-editor/webdev-execute.js"></script>\n'
     + '</head>\n<body class="execute">\n'
-    + '<script>' + this.editor.getValue() + '</script>\n'
+    + (this.config.preExecuteHtml || '')
+    + '<script>' + (this.config.preExecuteJs || '')
+    + this.editor.getValue()
+    + (this.config.postExecuteJs || '') + '</script>\n'
     + '</body>\n</html>\n';
   $iframe.attr('src', 'javascript:window["contents"]');
-};
-
-ACOSWebdev.prototype.extendGrade = function (eventOrMutations) {
-  var self = this;
-  var accessor = {
-    code: function () {
-      return self.editor.getValue();
-    },
-    output: function () {
-      return this.$editorOutput.find('iframe').get(0); //TODO test contents on console
-    }
-  };
-  return this.config.points(this.$element, this.config, accessor);
 };

@@ -14,3 +14,26 @@ body.execute {
   color: grey;
   margin: 0;
 }
+body.execute ul#display {
+  font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 18px;
+  margin: 0;
+}
+body.execute ul#display > li {
+  list-style: none;
+}
+body.execute ul#display > li.cmd::before {
+  content: "> ";
+}
+body.execute ul#display li.success {
+  color: green;
+}
+body.execute ul#display > li.success::before {
+  content: "✔ ";
+}
+body.execute ul#display > li.error {
+  color: red;
+}
+body.execute ul#display > li.error::before {
+  content: "⨯ ";
+}

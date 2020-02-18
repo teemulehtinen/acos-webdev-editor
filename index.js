@@ -18,7 +18,7 @@ Package.meta = {
   'license': 'MIT',
   'version': '0.1.0',
   'url': '',
-  'teaserContent': ['sample'],
+  'teaserContent': ['array_sum'],
   'contents': content
 };
 Package.packageType = 'content';
@@ -37,7 +37,8 @@ Package.initialize = function (req, params, handlers, cb) {
     nj.configure(templateDir, { autoescape: false });
     config.addToHead = nj.render(baseDir + '/templates/head.html', {});
     config.html = nj.render(baseDir + '/templates/body.html', {});
-    config.verticalLayout = true;
+    config.verticalLayout = config.verticalLayout !== undefined ? config.verticalLayout : true;
+    config.triggerButton = config.triggerButton !== undefined ? config.triggerButton : 'Run & Grade';
   }
   cb(config);
 };
