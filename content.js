@@ -28,6 +28,22 @@ let Content = {
     order: 0
   },
 
+  easy_points: {
+    instructions: "Your task is to call <code>alert<code> function with the argument 'I want points!'.",
+    initialJs: '',
+    preExecuteJs: '\nconst originalAlert = alert;\nvar givePoints = false;\nalert = function(msg) {\n\tif(msg === "I want points!") {\n\t\toriginalAlert("Congratulations you got some points for saying: " + msg);\n\t givePoints = true \n\t} else {\n\t\toriginalAlert("You didn\'t want points, your argument was: " + msg);\n\t}\n};',
+    postExecuteJs: '\nconsole.log(givePoints);\n',
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+      return { points: 0 };
+    },
+    maxPoints: 10,
+    title: "Easy Points",
+    description: "Get some easy points by calling alert with correct argument",
+    concepts: ["JavaScript", "function"],
+    order: 1
+  },
+
 };
 
 module.exports = Content;
