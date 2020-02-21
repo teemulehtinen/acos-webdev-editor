@@ -15,7 +15,6 @@ let Content = {
     executeAtStart: true,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(5, function (i, args, res) {
-        console.log(i, args, res);
         return args.reduce(function(s, v) { return s + v; }, 0) == parseInt(res) ? 5 : 0;
       });
       console.log('points', p);
@@ -43,7 +42,43 @@ let Content = {
     concepts: ["JavaScript", "function"],
     order: 1
   },
+  assigning_variables: {
+    instructions: "The variable <code>apples</code> should have the value 7.",
+    initialJs: 'let apples;',
+    postExecuteJs: 'display.cmd(apples); \n display.res(apples, 7);',
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+      var p = accessor.testResults(5, function (i, args, res) {
+        return res == 7 ? 10 : 0;
+      });
+      console.log('points', p);
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Variable assignment",
+    description: "Assign value 7 to apples variable.",
+    concepts: ["JavaScript", "variable", "assignment"],
+    order: 2
+  },
 
+  string_handling: {
+    instructions: "<code>message</code> variable should have the value: <code>\"This is easy\", the student shouted</code>",
+    initialJs: 'let message;',
+    postExecuteJs: 'display.cmd(message); \n display.res(message, \'"This is easy", the student shouted\');',
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+      var p = accessor.testResults(5, function (i, args, res) {
+        return res == '"This is easy", the student shouted' ? 10 : 0;
+      });
+      console.log('points', p);
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "String handling",
+    description: "Assign a string with quotation marks to a variable",
+    concepts: ["JavaScript", "string"],
+    order: 2
+  },
 };
 
 module.exports = Content;
