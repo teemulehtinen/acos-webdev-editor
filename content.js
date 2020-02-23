@@ -17,7 +17,6 @@ let Content = {
       var p = accessor.testResults(5, function (i, args, res) {
         return args.reduce(function(s, v) { return s + v; }, 0) == parseInt(res) ? 5 : 0;
       });
-      console.log('points', p);
       return { points: p };
     },
     maxPoints: 10,
@@ -30,11 +29,12 @@ let Content = {
   easy_points: {
     instructions: "Your task is to call <code>alert<code> function with the argument 'I want points!'.",
     initialJs: '',
-    preExecuteJs: '\nconst originalAlert = alert;\nvar givePoints = false;\nalert = function(msg) {\n\tif(msg === "I want points!") {\n\t\toriginalAlert("Congratulations you got some points for saying: " + msg);\n\t givePoints = true \n\t} else {\n\t\toriginalAlert("You didn\'t want points, your argument was: " + msg);\n\t}\n};',
-    postExecuteJs: '\nconsole.log(givePoints);\n',
-    executeAtStart: true,
+    preExecuteJs: '\nconst originalAlert = alert;\nalert = function(msg) {\n\tdisplay.cmd("Alert detected, checking argument:");\n\tif(msg === "I want points!") {\n\t\tdisplay.res("Match!", [true]);\n\t\toriginalAlert("Congratulations you got some points for saying: " + msg);\n\t} else {\n\t\tdisplay.res("No match!", [false]);\n\t\toriginalAlert("You didn\'t want points, your argument was: " + msg);\n\t}\n};',
     points: function ($element, config, accessor) {
-      return { points: 0 };
+      var p = accessor.testResults(10, function(i , args, res) {
+        return args[0] === true ? 10 : 0;
+      });
+      return { points: p };
     },
     maxPoints: 10,
     title: "Easy Points",
@@ -42,16 +42,16 @@ let Content = {
     concepts: ["JavaScript", "function"],
     order: 1
   },
+
   assigning_variables: {
     instructions: "The variable <code>apples</code> should have the value 7.",
     initialJs: 'let apples;',
-    postExecuteJs: 'display.cmd(apples); \n display.res(apples, 7);',
+    postExecuteJs: 'display.cmd("apples"); \n display.res(apples, 7);',
     executeAtStart: true,
     points: function ($element, config, accessor) {
-      var p = accessor.testResults(5, function (i, args, res) {
+      var p = accessor.testResults(10, function (i, args, res) {
         return res == 7 ? 10 : 0;
       });
-      console.log('points', p);
       return { points: p };
     },
     maxPoints: 10,
@@ -64,13 +64,12 @@ let Content = {
   string_handling: {
     instructions: "<code>message</code> variable should have the value: <code>\"This is easy\", the student shouted</code>",
     initialJs: 'let message;',
-    postExecuteJs: 'display.cmd(message); \n display.res(message, \'"This is easy", the student shouted\');',
+    postExecuteJs: 'display.cmd("message"); \n display.res(message, \'"This is easy", the student shouted\');',
     executeAtStart: true,
     points: function ($element, config, accessor) {
-      var p = accessor.testResults(5, function (i, args, res) {
+      var p = accessor.testResults(10, function (i, args, res) {
         return res == '"This is easy", the student shouted' ? 10 : 0;
       });
-      console.log('points', p);
       return { points: p };
     },
     maxPoints: 10,
