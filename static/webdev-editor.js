@@ -34,8 +34,6 @@ ACOSWebdev.prototype.extendReset = function () {
   });
   this.editor.setSession(js);
 
-  // TODO: listen and append edit data to log
-
   this.$editorOutput = this.$element.find('.exercise .output');
 
   if (this.config.executeAtStart) {
@@ -67,7 +65,7 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
     testResults: function (max_points, test) {
       return this.results().reduce(function (points, item, index) {
         var p = test(index, item.args, item.result);
-        item.$li.addClass(p >= max_points ? 'success' : 'error');
+        item.$li.addClass(p >= max_points ? 'success text-success' : 'error text-danger');
         return points + p;
       }, 0);
     }
@@ -81,7 +79,7 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
 ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
   var $out = $(this.$editorOutput.find('iframe').get(0).contentWindow.document.body);
   $out.find('script').remove();
-  return '<pre>' + this.editor.getValue() + '</pre><div>' + $out.html() + '</div>';
+  return '<pre><code>' + this.editor.getValue() + '</code></pre><div>' + $out.html() + '</div>';
 };
 
 ACOSWebdev.prototype.editorExecute = function () {
