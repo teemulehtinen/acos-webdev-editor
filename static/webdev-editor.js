@@ -73,7 +73,7 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
   this.editorExecute();
   setTimeout(function () {
     cb(self.config.points(self.$element, self.config, accessor));
-  }, 100);
+  }, 500);
 };
 
 ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {

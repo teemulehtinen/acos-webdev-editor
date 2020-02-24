@@ -78,6 +78,24 @@ let Content = {
     concepts: ["JavaScript", "string"],
     order: 2
   },
+  double_number_function: {
+    instructions: "Define a function called <code>doubleNumber</code>, that takes a number as parameter and returns the given number multiplied by 2",
+    initialJs: '',
+    postExecuteJs: 'var a = Math.floor((Math.random() * 100) + 1);\n'
+    + 'display.cmd("doubleNumber(" + a + ")");\n'
+    + 'display.res(doubleNumber(a), [a]);',
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      var p = accessor.testResults(10, function (i, args, res) {
+        return parseInt(res) === args[0]*2 ? 10 : 0;
+      });
+      return { points: p }
+    },
+    maxPoints: 10,
+    title: "declare doubleNumber function",
+    concepts: ["JavaScrit", "function declaration"],
+    order: 3
+  }
 };
 
 module.exports = Content;
