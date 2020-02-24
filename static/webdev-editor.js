@@ -12,12 +12,26 @@ ACOSWebdev.prototype.extendReset = function () {
     name: 'Execute',
     bindKey: { win: 'Ctrl-Enter', mac: 'Command-Enter' },
     exec: function () {
+      self.log.push({
+        type: 'editor-ctrl-enter',
+        time: new Date().getTime()
+      });
       self.grade();
     }
   });
 
   var js = ace.createEditSession(this.config.initialJs || '');
   js.setMode('ace/mode/javascript');
+  js.on('change', function (delta) {
+    self.log.push({
+      type: 'editor-change',
+      start: delta.start,
+      end: delta.end,
+      lines: delta.lines,
+      action: delta.action,
+      time: new Date().getTime()
+    });
+  });
   this.editor.setSession(js);
 
   // TODO: listen and append edit data to log
@@ -62,6 +76,12 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
   setTimeout(function () {
     cb(self.config.points(self.$element, self.config, accessor));
   }, 100);
+};
+
+ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
+  var $out = $(this.$editorOutput.find('iframe').get(0).contentWindow.document.body);
+  $out.find('script').remove();
+  return '<pre>' + this.editor.getValue() + '</pre><div>' + $out.html() + '</div>';
 };
 
 ACOSWebdev.prototype.editorExecute = function () {
