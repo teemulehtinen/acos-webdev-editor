@@ -76,8 +76,9 @@ let Content = {
     title: "String handling",
     description: "Assign a string with quotation marks to a variable",
     concepts: ["JavaScript", "string"],
-    order: 2
+    order: 3
   },
+
   double_number_function: {
     instructions: "Define a function called <code>doubleNumber</code>, that takes a number as parameter and returns the given number multiplied by 2",
     initialJs: '',
@@ -94,8 +95,9 @@ let Content = {
     maxPoints: 10,
     title: "declare doubleNumber function",
     concepts: ["JavaScrit", "function declaration"],
-    order: 3
+    order: 4
   },
+
   half_number_function: {
     instructions: "Define a function called <code>halveNumber</code>, that takes a number as parameter and returns the given number divided by 2",
     initialJs: '',
@@ -112,8 +114,26 @@ let Content = {
     maxPoints: 10,
     title: "declare halveNumber function",
     concepts: ["JavaScrit", "function declaration"],
-    order: 3
-  }
+    order: 5
+  },
+
+  string_printing: {
+    instructions: "You should print the following message with console.log: <code>\"This is easy\", the student shouted</code>",
+    initialJs: '',
+    preExecuteJs: 'const originalLog = console.log;\nconsole.log = function(msg) {\n\tdisplay.cmd("Console detected, checking argument:");\n\tif(msg === \'"This is easy", the student shouted\') {\n\t\tdisplay.res("Match!", [true]);\n\t\toriginalLog("Congratulations you got some points for printing: " + msg);\n\t} else {\n\t\tdisplay.res("No match!", [false]);\n\t\toriginalLog("You get any points, your argument was: " + msg);\n\t}\n};',
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+      var p = accessor.testResults(10, function(i , args, res) {
+        return args[0] === true ? 10 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "String printing",
+    description: "Get some easy points by calling console.log with correct argument",
+    concepts: ["JavaScript", "function", "console.log", "strings"],
+    order: 6
+  },
 };
 
 module.exports = Content;
