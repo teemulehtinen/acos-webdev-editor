@@ -27,7 +27,7 @@ let Content = {
   },
 
   easy_points: {
-    instructions: "Your task is to call <code>alert<code> function with the argument 'I want points!'.",
+    instructions: "Your task is to call <code>alert</code> function with the argument 'I want points!'.",
     initialJs: '',
     preExecuteJs: '\nconst originalAlert = alert;\nalert = function(msg) {\n\tdisplay.cmd("Alert detected, checking argument:");\n\tif(msg === "I want points!") {\n\t\tdisplay.res("Match!", [true]);\n\t\toriginalAlert("Congratulations you got some points for saying: " + msg);\n\t} else {\n\t\tdisplay.res("No match!", [false]);\n\t\toriginalAlert("You didn\'t want points, your argument was: " + msg);\n\t}\n};',
     points: function ($element, config, accessor) {
