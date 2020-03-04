@@ -171,6 +171,37 @@ let Content = {
     concepts: ["JavaScript", "function", "conditional", "strings"],
     order: 7
   },
+
+  while_loop: {
+    instructions: "Create a while loop, that counts down from 5 to 0 (print the numbers using console.log), and after the loop it prints \"Lift off!\" to the console",
+    initialJs: '',
+    preExecuteJs: 'let consolePrint = [];\n'
+    + 'const originalLog = console.log; \n'
+    + 'console.log = function(msg) {\n'
+    + '\toriginalLog(msg);\n'
+	  + '\tconsolePrint.push(msg);\n'
+    + '};\n'
+    + '\tlet correct = consolePrint.every((line,i) => {\n'
+    + '\t\treturn i === 6 ? line === \"Lift off!\" : line === consolePrint.length-2 -i\n'
+    + '\t});'
+    + 'originalLog(\"correct\", correct);'
+    + 'display.cmd("Checking log");\n'
+    + '\tdisplay.res(consolePrint, correct);\n'
+    + 'setTimeout( () => display.cmd(consolePrint), 50 );\n',
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      let p = accessor.testResults(10, function(i , args, res) {
+        return args === true ? 10 : 0;
+      });
+      console.log('element', $element);
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "While loop",
+    description: "Create a while loop, that counts down from 5 to 0 and after the loop prints \"Lift off!\"",
+    concepts: ["JavaScript", "while", "conditional", "strings"],
+    order: 8
+  }
 };
 
 module.exports = Content;
