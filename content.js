@@ -134,6 +134,43 @@ let Content = {
     concepts: ["JavaScript", "function", "console.log", "strings"],
     order: 6
   },
+
+  conditional_temperature: {
+    instructions: "Write a function called <code>readTemperature</code> that takes a temperature value (number) as parameter, and returns 'Cold', when the temperature is 15 degrees celcius or below, 'Moderate' when it is over 15 degrees but less or equal to 25 degrees, and 'Hot' when the temperature is over 25 degrees",
+    initialJs: '',
+    preExecuteJs: 'let randA = Math.floor((Math.random() * 15) + 1);\n'
+    + 'let randB = Math.floor((Math.random() * 26) + 1);\n'
+    + 'let randC = Math.floor((Math.random() * 36) + 1);\n'
+    + 'let testValues = [25, randA, 15, 24, randB, 16, 14, randC, 26];\n'
+    + 'let results = [];\n'
+    + 'testValues.forEach(t => {'
+    + '  display.cmd("readTemperature(" + t + ")");\n'
+    + '  results.push(readTemperature(t));\n'
+    + '});\n'
+    + 'display.res(results, testValues);',
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      var p = accessor.testResults(10, function (i, args, res) {
+        let resArray = res.split(",");
+        let correct = args.every((t, index) => {
+          if(t <= 15) {
+            return resArray[index] === 'Cold';
+          }
+          else if(t > 25) {
+            return resArray[index] === 'Hot';
+          }
+          return resArray[index] === 'Moderate';
+        })
+        return correct ? 10 : 0
+      });
+      return { points: p }
+    },
+    maxPoints: 10,
+    title: "Read the temperature",
+    description: "Read the temperature and return the correct string",
+    concepts: ["JavaScript", "function", "conditional", "strings"],
+    order: 7
+  },
 };
 
 module.exports = Content;
