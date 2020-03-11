@@ -201,7 +201,31 @@ let Content = {
     description: "Create a while loop, that counts down from 5 to 0 and after the loop prints \"Lift off!\"",
     concepts: ["JavaScript", "while", "conditional", "strings"],
     order: 8
-  }
+  },
+  numbers_array: {
+    instructions: "Define <code>numbers</code> to be an array that contains positive even integers up to (and including) ten.",
+    initialJs: 'let numbers;',
+    postExecuteJs: ''
+    + 'let indices = [0,1,2,3,4]; \n'
+    + 'let results = []; \n'
+    + 'indices.forEach(i => {'
+    + '  display.cmd("numbers[" + i + "]");\n'
+    + '  display.res(numbers[i], i*2+2);\n'
+    + '  results.push(numbers[i]);\n'
+    + '});\n',
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      var p = accessor.testResults(2, function (i, args, res) {
+        return parseInt(res) === i*2+2 ? 2 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Numbers array",
+    description: "Define an array that includes even positive integers up to (and including) ten.",
+    concepts: ["JavaScript", "variable", "assignment", "array", "integer"],
+    order: 9
+  },
 };
 
 module.exports = Content;
