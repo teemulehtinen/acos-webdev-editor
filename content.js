@@ -226,6 +226,30 @@ let Content = {
     concepts: ["JavaScript", "variable", "assignment", "array", "integer"],
     order: 9
   },
+  define_object: {
+    instructions: "Your task is to define an object to the variable myStuff. It should have the following keys <code>fruit</code>, <code>amount</code>, and <code>pinCode</code>. The keys should have the following values (in corresponding order): <code>'apple'</code>, <code>3</code>, and <code>[1,2,3,4]</code>",
+    initialJs: 'let myStuff;',
+    postExecuteJs: '\n'
+    + 'let keys = ["fruit", "amount", "pinCode"];'
+    + 'keys.forEach( k => {'
+    + '  display.cmd("myStuff." + k);\n'
+    + '  display.res( myStuff[k], myStuff[k] || [false]);\n'
+    +  '});\n',
+
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      let ans = [ "apple", 3,  [1,2,3,4] ];
+      var p = accessor.testResults(4, function (i, args, res) {
+        return res == ans[i] ? 4 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Define object",
+    description: "Define an object with specific keys and values",
+    concepts: ["JavaScript", "variable", "assignment", "object", ],
+    order: 9
+  },
 };
 
 module.exports = Content;
