@@ -59,7 +59,8 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
     results: function () {
       return this.$res().map(function () {
         var $li = $(this);
-        return { $li: $li, result: $li.html(), args: JSON.parse($li.attr('data-args')) };
+        var res = $li.find('pre.args').remove().text();
+        return { $li: $li, result: $li.html(), args: res ? JSON.parse(res) : undefined };
       }).get();
     },
     testResults: function (max_points, test) {

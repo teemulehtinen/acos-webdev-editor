@@ -22,6 +22,9 @@ body.execute ul#display {
 body.execute ul#display > li {
   list-style: none;
 }
+body.execute ul#display > li pre.args {
+  display: none;
+}
 body.execute ul#display > li.cmd::before {
   content: "> ";
 }
@@ -36,4 +39,15 @@ body.execute ul#display > li.error {
 }
 body.execute ul#display > li.error::before {
   content: "⨯ ";
+}
+body.execute button {
+  border: 1px solid silver;
+  border-radius: 0.5em;
+  background-color: transparent;
+  padding: 0.5em 1em;
+  margin: 0.5em;
+  color: grey;
+  font-family: inherit;
+  font-size: 90%;
+  font-weight: bold;
 }

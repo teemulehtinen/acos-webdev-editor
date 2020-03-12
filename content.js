@@ -7,7 +7,8 @@ let Content = {
   array_sum: {
     instructions: "The following JavaScript-function should calculate the sum of all integers given as an array. There seems to be an error and your task is to fix the function.",
     initialJs: 'function arraySum(arr) {\n  var s = 0;\n  for (var i = 1; i <= arr.length; i++) {\n    s += i;\n  }\n  return s;\n}\n',
-    postExecuteJs: 'for (var i = 0; i < 2; i++) {\n'
+    postExecuteJs: ';\n'
+      + 'for (var i = 0; i < 2; i++) {\n'
       + '  var a = rnd.intArray(10, 99, 4);\n'
       + '  display.cmd("arraySum(" + JSON.stringify(a) + "]);");\n'
       + '  display.res(arraySum(a), a);\n'
@@ -29,7 +30,18 @@ let Content = {
   easy_points: {
     instructions: "Your task is to call <code>alert</code> function with the argument 'I want points!'.",
     initialJs: '',
-    preExecuteJs: '\nconst originalAlert = alert;\nalert = function(msg) {\n\tdisplay.cmd("Alert detected, checking argument:");\n\tif(msg === "I want points!") {\n\t\tdisplay.res("Match!", [true]);\n\t\toriginalAlert("Congratulations you got some points for saying: " + msg);\n\t} else {\n\t\tdisplay.res("No match!", [false]);\n\t\toriginalAlert("You didn\'t want points, your argument was: " + msg);\n\t}\n};',
+    preExecuteJs: ''
+    + 'const originalAlert = alert;\n'
+    + 'alert = function(msg) {\n'
+    + '  display.cmd("Alert detected, checking argument:");\n'
+    + '  if (msg === "I want points!") {\n'
+    + '    display.res("Match!", [true]);\n'
+    + '    originalAlert("Congratulations you got some points for saying: " + msg);\n'
+    + '  } else {\n'
+    + '    display.res("No match!", [false]);\n'
+    + '    originalAlert("You didn\'t want points, your argument was: " + msg);\n'
+    + '  }\n'
+    + '};\n',
     points: function ($element, config, accessor) {
       var p = accessor.testResults(10, function(i , args, res) {
         return args[0] === true ? 10 : 0;
@@ -46,7 +58,7 @@ let Content = {
   assigning_variables: {
     instructions: "The variable <code>apples</code> should have the value 7.",
     initialJs: 'let apples;',
-    postExecuteJs: 'display.cmd("apples"); \n display.res(apples, 7);',
+    postExecuteJs: ';\n display.cmd("apples");\n display.res(apples, "");\n',
     executeAtStart: true,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(10, function (i, args, res) {
@@ -64,7 +76,7 @@ let Content = {
   string_handling: {
     instructions: "<code>message</code> variable should have the value: <code>\"This is easy\", the student shouted</code>",
     initialJs: 'let message;',
-    postExecuteJs: 'display.cmd("message"); \n display.res(message, \'"This is easy", the student shouted\');',
+    postExecuteJs: ';\n display.cmd("message");\n display.res(message, "");\n',
     executeAtStart: true,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(10, function (i, args, res) {
@@ -82,9 +94,10 @@ let Content = {
   double_number_function: {
     instructions: "Define a function called <code>doubleNumber</code>, that takes a number as parameter and returns the given number multiplied by 2",
     initialJs: '',
-    postExecuteJs: 'var a = Math.floor((Math.random() * 100) + 1);\n'
+    postExecuteJs: ';\n'
+    + 'var a = Math.floor((Math.random() * 100) + 1);\n'
     + 'display.cmd("doubleNumber(" + a + ")");\n'
-    + 'display.res(doubleNumber(a), [a]);',
+    + 'display.res(doubleNumber(a), [a]);}\n',
     executeAtStart: false,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(10, function (i, args, res) {
@@ -101,9 +114,10 @@ let Content = {
   half_number_function: {
     instructions: "Define a function called <code>halveNumber</code>, that takes a number as parameter and returns the given number divided by 2",
     initialJs: '',
-    postExecuteJs: 'var a = Math.floor((Math.random() * 100) + 1);\n'
+    postExecuteJs: ';\n'
+    + 'var a = Math.floor((Math.random() * 100) + 1);\n'
     + 'display.cmd("halveNumber(" + a + ")");\n'
-    + 'display.res(halveNumber(a), [a]);',
+    + 'display.res(halveNumber(a), [a]);\n',
     executeAtStart: false,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(10, function (i, args, res) {
@@ -120,7 +134,18 @@ let Content = {
   string_printing: {
     instructions: "You should print the following message with console.log: <code>\"This is easy\", the student shouted</code>",
     initialJs: '',
-    preExecuteJs: 'const originalLog = console.log;\nconsole.log = function(msg) {\n\tdisplay.cmd("Console detected, checking argument:");\n\tif(msg === \'"This is easy", the student shouted\') {\n\t\tdisplay.res("Match!", [true]);\n\t\toriginalLog("Congratulations you got some points for printing: " + msg);\n\t} else {\n\t\tdisplay.res("No match!", [false]);\n\t\toriginalLog("You get any points, your argument was: " + msg);\n\t}\n};',
+    preExecuteJs: ''
+    + 'const originalLog = console.log;\n'
+    + 'console.log = function(msg) {\n'
+    + '  display.cmd("Console detected, checking argument:");\n'
+    + '  if (msg === \'"This is easy", the student shouted\') {\n'
+    + '    display.res("Match!", [true]);\n'
+    + '    originalLog("Congratulations, you got some points for printing: " + msg);\n'
+    + '  } else {\n'
+    + '    display.res("No match!", [false]);\n'
+    + '    originalLog("You didn\'t get any points, your argument was: " + msg);\n'
+    + '  }\n'
+    + '};\n',
     executeAtStart: true,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(10, function(i , args, res) {
@@ -138,7 +163,8 @@ let Content = {
   conditional_temperature: {
     instructions: "Write a function called <code>readTemperature</code> that takes a temperature value (number) as parameter, and returns 'Cold', when the temperature is 15 degrees celcius or below, 'Moderate' when it is over 15 degrees but less or equal to 25 degrees, and 'Hot' when the temperature is over 25 degrees",
     initialJs: '',
-    preExecuteJs: 'let randA = Math.floor((Math.random() * 15) + 1);\n'
+    postExecuteJs: ';\n'
+    + 'let randA = Math.floor((Math.random() * 15) + 1);\n'
     + 'let randB = Math.floor((Math.random() * 26) + 1);\n'
     + 'let randC = Math.floor((Math.random() * 36) + 1);\n'
     + 'let testValues = [25, randA, 15, 24, randB, 16, 14, randC, 26];\n'
@@ -174,26 +200,24 @@ let Content = {
 
   while_loop: {
     instructions: "Create a while loop, that counts down from 5 to 0 (print the numbers using console.log), and after the loop it prints \"Lift off!\" to the console",
-    initialJs: '',
-    preExecuteJs: 'let consolePrint = [];\n'
-    + 'const originalLog = console.log; \n'
+    preExecuteJs: ''
+    + 'let consolePrint = [];\n'
+    + 'const originalLog = console.log;\n'
     + 'console.log = function(msg) {\n'
-    + '\toriginalLog(msg);\n'
-	  + '\tconsolePrint.push(msg);\n'
-    + '};\n'
-    + '\tlet correct = consolePrint.every((line,i) => {\n'
-    + '\t\treturn i === 6 ? line === \"Lift off!\" : line === consolePrint.length-2 -i\n'
-    + '\t});'
-    + 'originalLog(\"correct\", correct);'
-    + 'display.cmd("Checking log");\n'
-    + '\tdisplay.res(consolePrint, correct);\n'
-    + 'setTimeout( () => display.cmd(consolePrint), 50 );\n',
+    + '  originalLog(msg);\n'
+	  + '  consolePrint.push(msg);\n'
+    + '};\n',
+    postExecuteJs: ';\n'
+    + 'display.cmd("Console received:");\n'
+    + 'display.res(consolePrint.join(", "), consolePrint);\n',
     executeAtStart: false,
     points: function ($element, config, accessor) {
+      let correct = [5, 4, 3, 2, 1, 0, 'Lift off!'];
       let p = accessor.testResults(10, function(i , args, res) {
-        return args === true ? 10 : 0;
+        return correct.every(function (e, i) {
+          return args[i] == e;
+        }) ? 10 : 0;
       });
-      console.log('element', $element);
       return { points: p };
     },
     maxPoints: 10,
@@ -202,21 +226,20 @@ let Content = {
     concepts: ["JavaScript", "while", "conditional", "strings"],
     order: 8
   },
+
   numbers_array: {
     instructions: "Define <code>numbers</code> to be an array that contains positive even integers up to (and including) ten.",
     initialJs: 'let numbers;',
-    postExecuteJs: ''
-    + 'let indices = [0,1,2,3,4]; \n'
-    + 'let results = []; \n'
-    + 'indices.forEach(i => {'
+    postExecuteJs: ';\n'
+    + 'let indices = [0,1,2,3,4];\n'
+    + 'indices.forEach(i => {\n'
     + '  display.cmd("numbers[" + i + "]");\n'
-    + '  display.res(numbers[i], i*2+2);\n'
-    + '  results.push(numbers[i]);\n'
+    + '  display.res((numbers || [])[i], i);\n'
     + '});\n',
     executeAtStart: false,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(2, function (i, args, res) {
-        return parseInt(res) === i*2+2 ? 2 : 0;
+        return parseInt(args) * 2 + 2 == parseInt(res) ? 2 : 0;
       });
       return { points: p };
     },
@@ -226,16 +249,16 @@ let Content = {
     concepts: ["JavaScript", "variable", "assignment", "array", "integer"],
     order: 9
   },
+
   define_object: {
     instructions: "Your task is to define an object to the variable myStuff. It should have the following keys <code>fruit</code>, <code>amount</code>, and <code>pinCode</code>. The keys should have the following values (in corresponding order): <code>'apple'</code>, <code>3</code>, and <code>[1,2,3,4]</code>",
     initialJs: 'let myStuff;',
-    postExecuteJs: '\n'
+    postExecuteJs: ';\n'
     + 'let keys = ["fruit", "amount", "pinCode"];'
-    + 'keys.forEach( k => {'
+    + 'keys.forEach(k => {'
     + '  display.cmd("myStuff." + k);\n'
-    + '  display.res( myStuff[k], myStuff[k] || [false]);\n'
-    +  '});\n',
-
+    + '  display.res(myStuff[k], myStuff[k] || [false]);\n'
+    + '});\n',
     executeAtStart: false,
     points: function ($element, config, accessor) {
       let ans = [ "apple", 3,  [1,2,3,4] ];
@@ -248,37 +271,81 @@ let Content = {
     title: "Define object",
     description: "Define an object with specific keys and values",
     concepts: ["JavaScript", "variable", "assignment", "object", ],
-    order: 9
+    order: 10
+  },
+
+  note_array: {
+    instructions: "Define <code>notes</code> to be an array that contains 7 \"note arrays\" that are pairs of note pitch and it's length, e.g. <code>[\"C5\",\"8n\"]</code>. The array must first have four sixteenth (16n) notes A4, B4, C#4, A4. Then, TWICE the eighth (8n) note E5. And finally, the half (2n) note C#4.",
+    initialJs: 'let notes;',
+    postExecuteJs: ';\n'
+    + 'let notesTimed = [];'
+    + 'display.cmd([0,1,2,3,4,5,6].map(i => { return "notes[" + i + "]"; }).join(", "));\n'
+    + 'for (var i = 0; i < 7; i++) {\n'
+    + '  display.res(JSON.stringify((notes || [])[i]), (notes || [])[i]);\n'
+    + '  if (notes && notes[i] && notes[i].length > 1) {\n'
+    + '   notesTimed.push(notes[i]);\n'
+    + '  }\n'
+    + '}\n'
+    + 'document.write("<script src=\\"https://cdnjs.cloudflare.com/ajax/libs/tone/14.5.41/Tone.js\\"></"+"script>");\n'
+    + 'function music() {\n'
+    + '  var synth = new Tone.Synth().toDestination();\n'
+    + '  var pattern = new Tone.Pattern(function(time, note) {\n'
+    + '    synth.triggerAttackRelease(note[0], note[1]);\n'
+    + '  }, notesTimed);\n'
+    + '  pattern.start(0);\n'
+    + '  Tone.Transport.bpm.value = 160;\n'
+    + '  Tone.Transport.start();\n'
+    + '}\n'
+    + 'if (notesTimed.length > 0) {\n'
+    + '  document.write("<button onclick=\\"music();\\">Play music</button>");\n'
+    + '}\n',
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      var correct = [["A4","16n"],["B4","16n"],["C#4","16n"],["A4","16n"],["E5","8n"],["E5","8n"],["C#4","2n"]];
+      var p = accessor.testResults(1, function (i, args, res) {
+        if (args !== undefined && args.length > 1) {
+          return args[0] == correct[i][0] && args[1] == correct[i][1] ? (i > 3 ? 2 : 1) : 0;
+        }
+        return 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Notes array",
+    description: "Define an array of arrays.",
+    concepts: ["JavaScript", "variable", "assignment", "array", "nested"],
+    order: 11
   },
 
   repeat_note: {
-  instructions: 'Create a function called <code>repeatNote</code>, that takes as parameters a <code>note</code> as string and a number <code>n</code>.</br>'
-  +'The function returns a string where the given <code>note</code> is repeated <code>n</code> numbers of times, each time separated by a white space,'
-  + ' without white space at the end.</br>'
-  +'For example calling <code>repeatNote("C#", 3)</code> should return <code>"C# C# C#"</code>.</br>'
-  + 'There are a number of ways to achieve this, for example by using the following methods: '
-  + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat" target="_blank">MDN string.repeat()</a> and '
-  + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim" target="_blank">MDN string.trim()</a>',
-  initialJs: '',
-  preExecuteJs: 'let scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];\n'
-  + 'let rand = Math.floor((Math.random() * 100) + 1);\n'
-  + 'let ind = Math.floor((Math.random() * 11) + 1);\n'
-  + 'display.res(repeatNote(scale[ind], rand), [scale[ind], rand]);',
-  executeAtStart: false,
-  points: function ($element, config, accessor) {
-    let p = accessor.testResults(10, function(i , args, res) {
-      console.log(args)
-      console.log(res)
-      return res ===  (args[0] + ' ').repeat(args[1]).trim() ? 10 : 0;
-    });
-    return { points: p };
+    instructions: 'Create a function called <code>repeatNote</code>, that takes as parameters a <code>note</code> as string and a number <code>n</code>.</br>'
+    +'The function returns a string where the given <code>note</code> is repeated <code>n</code> numbers of times, each time separated by a white space,'
+    + ' without white space at the end.</br>'
+    +'For example calling <code>repeatNote("C#", 3)</code> should return <code>"C# C# C#"</code>.</br>'
+    + 'There are a number of ways to achieve this, for example by using the following methods: '
+    + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat" target="_blank">MDN string.repeat()</a> and '
+    + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim" target="_blank">MDN string.trim()</a>',
+    initialJs: '',
+    preExecuteJs: ''
+    + 'let scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];\n'
+    + 'let rand = Math.floor((Math.random() * 100) + 1);\n'
+    + 'let ind = Math.floor((Math.random() * 11) + 1);\n'
+    + 'display.cmd("repeatNote(\\"" + scale[ind] + "\\", " + rand + ")");\n'
+    + 'display.res(repeatNote(scale[ind], rand), [scale[ind], rand]);\n',
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      let p = accessor.testResults(10, function(i , args, res) {
+        return res === (args[0] + ' ').repeat(args[1]).trim() ? 10 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Repeat note and trim",
+    description: "Create a function that takes a string and repeats it n numbers of times",
+    concepts: ["JavaScript", "repeat", "strings"],
+    order: 12
   },
-  maxPoints: 10,
-  title: "Repeat note and trim",
-  description: "Create a function that takes a string and repeats it n numbers of times",
-  concepts: ["JavaScript", "repat", "strings"],
-  order: 10
-  }
+
 };
 
 module.exports = Content;

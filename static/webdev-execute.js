@@ -12,8 +12,8 @@ var display = (function () {
     if (cls) {
       line.setAttribute('class', cls);
     }
-    if (args) {
-      line.setAttribute('data-args', JSON.stringify(args));
+    if (args !== undefined) {
+      html += '<pre class="args">' + JSON.stringify(args) + '</pre>';
     }
     line.innerHTML = html;
     element.appendChild(line);
