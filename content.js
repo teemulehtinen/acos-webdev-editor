@@ -202,34 +202,82 @@ let Content = {
     concepts: ["JavaScript", "while", "conditional", "strings"],
     order: 8
   },
-
-  repeat_note: {
-    instructions: 'Create a function called <code>repeatNote</code>, that takes as parameters a <code>note</code> as string and a number <code>n</code>.</br>'
-    +'The function returns a string where the given <code>note</code> is repeated <code>n</code> numbers of times, each time separated by a white space,'
-    + ' without white space at the end.</br>'
-    +'For example calling <code>repeatNote("C#", 3)</code> should return <code>"C# C# C#"</code>.</br>'
-    + 'There are a number of ways to achieve this, for example by using the following methods: '
-    + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat" target="_blank">MDN string.repeat()</a> and '
-    + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim" target="_blank">MDN string.trim()</a>',
-    initialJs: '',
-    preExecuteJs: 'let scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];\n'
-    + 'let rand = Math.floor((Math.random() * 100) + 1);\n'
-    + 'let ind = Math.floor((Math.random() * 11) + 1);\n'
-    + 'display.res(repeatNote(scale[ind], rand), [scale[ind], rand]);',
+  numbers_array: {
+    instructions: "Define <code>numbers</code> to be an array that contains positive even integers up to (and including) ten.",
+    initialJs: 'let numbers;',
+    postExecuteJs: ''
+    + 'let indices = [0,1,2,3,4]; \n'
+    + 'let results = []; \n'
+    + 'indices.forEach(i => {'
+    + '  display.cmd("numbers[" + i + "]");\n'
+    + '  display.res(numbers[i], i*2+2);\n'
+    + '  results.push(numbers[i]);\n'
+    + '});\n',
     executeAtStart: false,
     points: function ($element, config, accessor) {
-      let p = accessor.testResults(10, function(i , args, res) {
-        console.log(args)
-        console.log(res)
-        return res ===  (args[0] + ' ').repeat(args[1]).trim() ? 10 : 0;
+      var p = accessor.testResults(2, function (i, args, res) {
+        return parseInt(res) === i*2+2 ? 2 : 0;
       });
       return { points: p };
     },
     maxPoints: 10,
-    title: "Repeat note and trim",
-    description: "Create a function that takes a string and repeats it n numbers of times",
-    concepts: ["JavaScript", "repat", "strings"],
+    title: "Numbers array",
+    description: "Define an array that includes even positive integers up to (and including) ten.",
+    concepts: ["JavaScript", "variable", "assignment", "array", "integer"],
     order: 9
+  },
+  define_object: {
+    instructions: "Your task is to define an object to the variable myStuff. It should have the following keys <code>fruit</code>, <code>amount</code>, and <code>pinCode</code>. The keys should have the following values (in corresponding order): <code>'apple'</code>, <code>3</code>, and <code>[1,2,3,4]</code>",
+    initialJs: 'let myStuff;',
+    postExecuteJs: '\n'
+    + 'let keys = ["fruit", "amount", "pinCode"];'
+    + 'keys.forEach( k => {'
+    + '  display.cmd("myStuff." + k);\n'
+    + '  display.res( myStuff[k], myStuff[k] || [false]);\n'
+    +  '});\n',
+
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      let ans = [ "apple", 3,  [1,2,3,4] ];
+      var p = accessor.testResults(4, function (i, args, res) {
+        return res == ans[i] ? 4 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Define object",
+    description: "Define an object with specific keys and values",
+    concepts: ["JavaScript", "variable", "assignment", "object", ],
+    order: 9
+  },
+
+  repeat_note: {
+  instructions: 'Create a function called <code>repeatNote</code>, that takes as parameters a <code>note</code> as string and a number <code>n</code>.</br>'
+  +'The function returns a string where the given <code>note</code> is repeated <code>n</code> numbers of times, each time separated by a white space,'
+  + ' without white space at the end.</br>'
+  +'For example calling <code>repeatNote("C#", 3)</code> should return <code>"C# C# C#"</code>.</br>'
+  + 'There are a number of ways to achieve this, for example by using the following methods: '
+  + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat" target="_blank">MDN string.repeat()</a> and '
+  + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim" target="_blank">MDN string.trim()</a>',
+  initialJs: '',
+  preExecuteJs: 'let scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];\n'
+  + 'let rand = Math.floor((Math.random() * 100) + 1);\n'
+  + 'let ind = Math.floor((Math.random() * 11) + 1);\n'
+  + 'display.res(repeatNote(scale[ind], rand), [scale[ind], rand]);',
+  executeAtStart: false,
+  points: function ($element, config, accessor) {
+    let p = accessor.testResults(10, function(i , args, res) {
+      console.log(args)
+      console.log(res)
+      return res ===  (args[0] + ' ').repeat(args[1]).trim() ? 10 : 0;
+    });
+    return { points: p };
+  },
+  maxPoints: 10,
+  title: "Repeat note and trim",
+  description: "Create a function that takes a string and repeats it n numbers of times",
+  concepts: ["JavaScript", "repat", "strings"],
+  order: 10
   }
 };
 
