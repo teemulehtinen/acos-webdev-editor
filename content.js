@@ -201,6 +201,35 @@ let Content = {
     description: "Create a while loop, that counts down from 5 to 0 and after the loop prints \"Lift off!\"",
     concepts: ["JavaScript", "while", "conditional", "strings"],
     order: 8
+  },
+
+  repeat_note: {
+    instructions: 'Create a function called <code>repeatNote</code>, that takes as parameters a <code>note</code> as string and a number <code>n</code>.</br>'
+    +'The function returns a string where the given <code>note</code> is repeated <code>n</code> numbers of times, each time separated by a white space,'
+    + ' without white space at the end.</br>'
+    +'For example calling <code>repeatNote("C#", 3)</code> should return <code>"C# C# C#"</code>.</br>'
+    + 'There are a number of ways to achieve this, for example by using the following methods: '
+    + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat" target="_blank">MDN string.repeat()</a> and '
+    + '<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim" target="_blank">MDN string.trim()</a>',
+    initialJs: '',
+    preExecuteJs: 'let scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];\n'
+    + 'let rand = Math.floor((Math.random() * 100) + 1);\n'
+    + 'let ind = Math.floor((Math.random() * 11) + 1);\n'
+    + 'display.res(repeatNote(scale[ind], rand), [scale[ind], rand]);',
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      let p = accessor.testResults(10, function(i , args, res) {
+        console.log(args)
+        console.log(res)
+        return res ===  (args[0] + ' ').repeat(args[1]).trim() ? 10 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Repeat note and trim",
+    description: "Create a function that takes a string and repeats it n numbers of times",
+    concepts: ["JavaScript", "repat", "strings"],
+    order: 9
   }
 };
 
