@@ -97,7 +97,7 @@ let Content = {
     postExecuteJs: ';\n'
     + 'var a = Math.floor((Math.random() * 100) + 1);\n'
     + 'display.cmd("doubleNumber(" + a + ")");\n'
-    + 'display.res(doubleNumber(a), [a]);}\n',
+    + 'display.res(doubleNumber(a), [a]);\n',
     executeAtStart: false,
     points: function ($element, config, accessor) {
       var p = accessor.testResults(10, function (i, args, res) {
