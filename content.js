@@ -349,8 +349,40 @@ let Content = {
   query_selector_all: {
     instructions: `The text of the pizza toppings is wrong, help us fix it.
     Find all the <code>li</code> elements within the <code>ul</code> element with
-    <code>id="pizza-topping"</code> using the <code>document.querySelectorAll()</code>
-    method. Then fix the <em>innerText</em> of each element.`,
+    <code>id="pizza-toppings"</code> using the <code>document.querySelectorAll()</code>
+    method. Then fix the <em>innerText</em> of each element. The grader does not care
+    if you are using upper case letters or not, so don't worry about that.
+    Finally print the NodeList to the console. For example:<br/>
+    <code><br/>
+    let toppings = document.querySelectorAll(/*your code here*/);<br/>
+    /*Go through the Nodes in the toppings variable and set the right innerText*/<br/>
+    /*......*/<br/>
+    console.log(toppings);<br/>
+    </code><br/>
+    If your code is correct, the names in the list below the editor will change.
+    Testing with the dev tools console on the exercise itself might not give the
+    expected results and might also break the grading. For this reason we advise
+    you to copy the following code into an empty HTML file, and test your solution
+    in there by opening it within with the browser and using the developer tools
+    console:<br/>
+    <code><br/>
+    &lt;!DOCTYPE html&gt;<br/>
+    &lt;html lang="en"&gt;<br/>
+    &emsp;&lt;head&gt;<br/>
+    &emsp;&emsp;&lt;meta content="text/html;charset=utf-8" http-equiv="Content-Type"&gt;<br/>
+    &emsp;&emsp;&lt;meta content="utf-8" http-equiv="encoding"&gt;<br/>
+    &emsp;&lt;/head&gt;<br/>
+    &emsp;&lt;body&gt;<br/>
+    &emsp;&emsp;&lt;h3&gt;Pizza toppings:&lt;/h3&gt;<br/>
+    &emsp;&emsp;&lt;ul id="pizza-toppings"&gt;<br/>
+    &emsp;&emsp;&emsp;&lt;li&gt;Batsilica&lt;/li&gt;<br/>
+    &emsp;&emsp;&emsp;&lt;li&gt;Tomtato&lt;/li&gt;<br/>
+    &emsp;&emsp;&emsp;&lt;li&gt;Morezarella&lt;/li&gt;<br/>
+    &emsp;&emsp;&emsp;&lt;li&gt;Hamster&lt;/li&gt;<br/>
+    &emsp;&emsp;&lt;/ul&gt;<br/>
+    &emsp;&lt;/body&gt;<br/>
+    &lt;/html&gt;<br/>
+    </code> `,
     initialJs: '',
     preExecuteJs:`
     let consolePrint = [];
