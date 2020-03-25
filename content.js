@@ -346,6 +346,48 @@ let Content = {
     order: 12
   },
 
+  query_selector_all: {
+    instructions: `The text of the pizza toppings is wrong, help us fix it.
+    Find all the <code>li</code> elements within the <code>ul</code> element with
+    <code>id="pizza-topping"</code> using the <code>document.querySelectorAll()</code>
+    method. Then fix the <em>innerText</em> of each element.`,
+    initialJs: '',
+    preExecuteJs:`
+    let consolePrint = [];
+    const originalLog = console.log;
+    console.log = function(msg) {
+      originalLog(msg);
+      display.res(msg, [msg[0].innerText, msg[1].innerText, msg[2].innerText, msg[3].innerText]);
+    };
+    let listDiv = document.createElement('div');
+    listDiv.innerHTML = '<h3>Pizza toppings:</h3><ul id="pizza-toppings"><li>Batsilica</li><li>Tomtato</li><li>Morezarella</li><li>Hamster</li></ul>'
+    document.body.appendChild(listDiv)
+    `,
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+      let toppingsInaccessor = document.querySelectorAll('#pizza-toppings li');
+        let correctNames = [ 'BASILICA', 'TOMATO', 'MOZZARELLA', 'HAM'];
+        let p = accessor.testResults(10, function(i , args, res) {
+          console.log('res:', res);
+          console.log('args:', args);
+          let points = 0;
+          args.forEach((item, i) => {
+            console.log('In testResults', item)
+            if(item.toUpperCase() === correctNames[i]) {
+              points += 2.5;
+            }
+          });
+          return points;
+        });
+        return { points: p };
+    },
+    maxPoints: 10,
+    title: "Select and modify the right element",
+    description: "",
+    concepts: ["JavaScript", "querySelectorAll", "id"],
+    order: 13
+  },
+
 };
 
 module.exports = Content;
