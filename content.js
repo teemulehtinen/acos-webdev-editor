@@ -416,7 +416,7 @@ let Content = {
     maxPoints: 10,
     title: "Select and modify the right element",
     description: "",
-    concepts: ["JavaScript", "querySelectorAll", "id"],
+    concepts: ["JavaScript", "querySelectorAll", "id", "innerText"],
     order: 13
   },
 
