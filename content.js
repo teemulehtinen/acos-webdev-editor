@@ -353,37 +353,37 @@ let Content = {
     <code>id="pizza-toppings"</code> using the <code>document.querySelectorAll()</code>
     method. Then fix the <em>innerText</em> of each element. The grader does not care
     if you are using upper case letters or not, so don't worry about that.
-    Finally print the NodeList to the console. For example:<br/>
-    <code><br/>
-    let toppings = document.querySelectorAll(/*your code here*/);<br/>
-    /*Go through the Nodes in the toppings variable and set the right innerText*/<br/>
-    /*......*/<br/>
-    console.log(toppings);<br/>
-    </code><br/>
+    Finally print the NodeList to the console. For example:
+    <pre><code>
+    let toppings = document.querySelectorAll(/*your code here*/);
+    /*Go through the Nodes in the toppings variable and set the right innerText*/
+    /*......*/
+    console.log(toppings);
+    </code></pre>
     If your code is correct, the names in the list below the editor will change.
     Testing with the dev tools console on the exercise itself might not give the
     expected results and might also break the grading. For this reason we advise
     you to copy the following code into an empty HTML file, and test your solution
     in there by opening it within with the browser and using the developer tools
-    console:<br/>
-    <code><br/>
-    &lt;!DOCTYPE html&gt;<br/>
-    &lt;html lang="en"&gt;<br/>
-    &emsp;&lt;head&gt;<br/>
-    &emsp;&emsp;&lt;meta content="text/html;charset=utf-8" http-equiv="Content-Type"&gt;<br/>
-    &emsp;&emsp;&lt;meta content="utf-8" http-equiv="encoding"&gt;<br/>
-    &emsp;&lt;/head&gt;<br/>
-    &emsp;&lt;body&gt;<br/>
-    &emsp;&emsp;&lt;h3&gt;Pizza toppings:&lt;/h3&gt;<br/>
-    &emsp;&emsp;&lt;ul id="pizza-toppings"&gt;<br/>
-    &emsp;&emsp;&emsp;&lt;li&gt;Batsilica&lt;/li&gt;<br/>
-    &emsp;&emsp;&emsp;&lt;li&gt;Tomtato&lt;/li&gt;<br/>
-    &emsp;&emsp;&emsp;&lt;li&gt;Morezarella&lt;/li&gt;<br/>
-    &emsp;&emsp;&emsp;&lt;li&gt;Hamster&lt;/li&gt;<br/>
-    &emsp;&emsp;&lt;/ul&gt;<br/>
-    &emsp;&lt;/body&gt;<br/>
-    &lt;/html&gt;<br/>
-    </code> `,
+    console:
+    <pre><code>
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en"&gt;
+    &emsp;&lt;head&gt;
+    &emsp;&emsp;&lt;meta content="text/html;charset=utf-8" http-equiv="Content-Type"&gt;
+    &emsp;&emsp;&lt;meta content="utf-8" http-equiv="encoding"&gt;
+    &emsp;&lt;/head&gt;
+    &emsp;&lt;body&gt;
+    &emsp;&emsp;&lt;h3&gt;Pizza toppings:&lt;/h3&gt;
+    &emsp;&emsp;&lt;ul id="pizza-toppings"&gt;
+    &emsp;&emsp;&emsp;&lt;li&gt;Batsilica&lt;/li&gt;
+    &emsp;&emsp;&emsp;&lt;li&gt;Tomtato&lt;/li&gt;
+    &emsp;&emsp;&emsp;&lt;li&gt;Morezarella&lt;/li&gt;
+    &emsp;&emsp;&emsp;&lt;li&gt;Hamster&lt;/li&gt;
+    &emsp;&emsp;&lt;/ul&gt;
+    &emsp;&lt;/body&gt;
+    &lt;/html&gt;
+    </code></pre>`,
     initialJs: '',
     preExecuteJs:`
     let consolePrint = [];
@@ -398,14 +398,10 @@ let Content = {
     `,
     executeAtStart: true,
     points: function ($element, config, accessor) {
-      let toppingsInaccessor = document.querySelectorAll('#pizza-toppings li');
         let correctNames = [ 'BASILICA', 'TOMATO', 'MOZZARELLA', 'HAM'];
         let p = accessor.testResults(10, function(i , args, res) {
-          console.log('res:', res);
-          console.log('args:', args);
           let points = 0;
           args.forEach((item, i) => {
-            console.log('In testResults', item)
             if(item.toUpperCase() === correctNames[i]) {
               points += 2.5;
             }
@@ -420,6 +416,87 @@ let Content = {
     concepts: ["JavaScript", "querySelectorAll", "id", "innerText"],
     order: 13
   },
+
+  remove_element: {
+    instructions: `Our virtual piano does not work properly, there seems to be a
+    wrong key in it (D♭). Can you remove the wrong key using the
+    ChildNode.remove() method? Try first getting the <code>div</code> with
+    <code>id="piano-keyboard"</code>, then get the <code>childNodes</code> from it.
+    Once you have the NodeList containing the  <code>childNodes</code>, you can remove
+    the one with D♭. Finally print the NodeList to the console with for
+    us to evaluate it. For example:
+    <pre><code>
+    let pianoDiv = /* Get the div with id="piano-keyboard" *
+    let keys = /* Get the child nodes of pianoDiv */
+    /* Remove the D♭ key from keys */
+    console.log(keys);
+    </code></pre>
+    If your code is correct, the D♭ key will disappear.
+    Testing with the dev tools console on the exercise itself might not give the
+    expected results and might also break the grading. For this reason we advise
+    you to copy the following code into an empty HTML file, and test your solution
+    in there by opening it within with the browser and using the developer tools
+    console:
+    <pre><code>
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en" dir="ltr"&gt;
+    &emsp;&lt;head&gt;
+    &emsp;&emsp;&lt;meta charset="utf-8"&gt;
+    &emsp;&lt;/head&gt;
+    &emsp;&lt;body&gt;
+    &emsp;&emsp;&lt;div id="piano-keyboard"&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;C&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;C#&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D♭&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;D&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D#&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;E&lt;/button&gt;
+    &emsp;&emsp;&lt;/div&gt;
+    &emsp;&lt;/body&gt;
+    &lt;/html&gt;
+    </code></pre>`,
+    initialJs: '',
+    preExecuteJs:`
+    let consolePrint = [];
+    const originalLog = console.log;
+    console.log = function(msg) {
+      originalLog(msg);
+      let rightFormat = typeof msg === 'object';
+      display.cmd('Return value is in the right form: ' + rightFormat);
+      if(!rightFormat) display.cmd('The returend value should be a NodeList');
+      else if (msg.length !== 5) display.cmd('The number of elements in returned NodeList should be 5 but it is: ' + msg.length);
+      else {
+        display.cmd('Checking keys in returned NodeList:');
+        let keysInList = [msg[0].innerText, msg[1].innerText, msg[2].innerText, msg[3].innerText, msg[4].innerText];
+        display.res(keysInList, keysInList);
+      }
+    };
+    let pianoDivInConf = document.createElement('div');
+    pianoDivInConf.innerHTML = '<div id="piano-keyboard" style="text-align: center"><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">C</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">C#</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">D♭</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">D</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">D#</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">E</button></div>';
+    document.body.appendChild(pianoDivInConf);
+    `,
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+        let outputDiv =  document.getElementsByClassName('execute');
+        if(outputDiv.length) outputDiv.style.height = '400px';
+        let correctKeys = [ 'C', 'C#', 'D', 'D#', 'E'];
+        let p = accessor.testResults(10, function(i , args, res) {
+          let points = 0;
+          args.forEach((item, i) => {
+            if(item.toUpperCase() === correctKeys[i]) {
+              points += 2.5;
+            }
+          });
+          return points;
+        });
+        return { points: p };
+    },
+    maxPoints: 10,
+    title: "Select and remove the right element",
+    description: "",
+    concepts: ["JavaScript", "getElementById", "childNodes", "innerText", "remove"],
+    order: 13
+  }
 
 };
 
