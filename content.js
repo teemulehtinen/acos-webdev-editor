@@ -347,7 +347,8 @@ let Content = {
   },
 
   query_selector_all: {
-    instructions: `The text of the pizza toppings is wrong, help us fix it.
+    instructions: `The text of the pizza toppings is wrong, help us fix it by setting
+    the correct text (Basilica, Tomato, Mozzarella, Ham).
     Find all the <code>li</code> elements within the <code>ul</code> element with
     <code>id="pizza-toppings"</code> using the <code>document.querySelectorAll()</code>
     method. Then fix the <em>innerText</em> of each element. The grader does not care
