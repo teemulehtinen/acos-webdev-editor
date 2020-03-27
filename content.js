@@ -496,6 +496,87 @@ let Content = {
     description: "",
     concepts: ["JavaScript", "getElementById", "childNodes", "innerText", "remove"],
     order: 14
+  },
+
+  modify_element_innerText: {
+    instructions: `Our virtual piano now has lost the notes from the keys and it
+    is very sad. There should be C, C#, D, D# and E, but instead there is just ":(". Can you help us
+    setting back the correct key names? Try first getting the <code>div</code> with
+    <code>id="piano-keyboard"</code>, then get the <code>childNodes</code> from it.
+    Once you have the NodeList containing the  <code>childNodes</code>, you can
+    add the correct key names modifying the <code>innerText</code> property of each
+    element in the list. Finally print the NodeList to the console with for
+    us to evaluate it. For example:
+    <pre><code>
+    let pianoDiv = /* Get the div with id="piano-keyboard" *
+    let keys = /* Get the child nodes of pianoDiv */
+    /* Modify the innerText of each element in the list by adding the correct note */
+    console.log(keys);
+    </code></pre>
+    If your code is correct, the notes will appear in the keys.
+    Testing with the dev tools console on the exercise itself might not give the
+    expected results and might also break the grading. For this reason we advise
+    you to copy the following code into an empty HTML file, and test your solution
+    in there by opening it within with the browser and using the developer tools
+    console:
+    <pre><code>
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en" dir="ltr"&gt;
+    &emsp;&lt;head&gt;
+    &emsp;&emsp;&lt;meta charset="utf-8"&gt;
+    &emsp;&lt;/head&gt;
+    &emsp;&lt;body&gt;
+    &emsp;&emsp;&lt;div id="piano-keyboard"&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;:(&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;:(&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;:(&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;:(&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;:(&lt;/button&gt;
+    &emsp;&emsp;&lt;/div&gt;
+    &emsp;&lt;/body&gt;
+    &lt;/html&gt;
+    </code></pre>`,
+    initialJs: '',
+    preExecuteJs:`
+    let consolePrint = [];
+    const originalLog = console.log;
+    console.log = function(msg) {
+      originalLog(msg);
+      let rightFormat = typeof msg === 'object';
+      display.cmd('Return value is in the right form: ' + rightFormat);
+      if(!rightFormat) display.cmd('The returend value should be a NodeList');
+      else if (msg.length !== 5) display.cmd('The number of elements in returned NodeList should be 5 but it is: ' + msg.length);
+      else {
+        display.cmd('Checking keys in returned NodeList:');
+        let keysInList = [msg[0].innerText, msg[1].innerText, msg[2].innerText, msg[3].innerText, msg[4].innerText];
+        display.res(keysInList, keysInList);
+      }
+    };
+    let pianoDivInConf = document.createElement('div');
+    pianoDivInConf.innerHTML = '<div id="piano-keyboard" style="text-align: center"><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">:(</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">:(</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">:(</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">:(</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">:(</button></div>';
+    document.body.appendChild(pianoDivInConf);
+    `,
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+        let outputDiv =  document.getElementsByClassName('execute');
+        if(outputDiv.length) outputDiv.style.height = '400px';
+        let correctKeysInConf = [ 'C', 'C#', 'D', 'D#', 'E'];
+        let p = accessor.testResults(10, function(i , args, res) {
+          let points = 0;
+          args.forEach((item, i) => {
+            if(item.toUpperCase() === correctKeysInConf[i]) {
+              points += 2.5;
+            }
+          });
+          return points;
+        });
+        return { points: p };
+    },
+    maxPoints: 10,
+    title: "Select and modify the right element",
+    description: "",
+    concepts: ["JavaScript", "getElementById", "childNodes", "innerText", "modify"],
+    order: 14
   }
 
 };
