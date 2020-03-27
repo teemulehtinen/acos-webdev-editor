@@ -423,8 +423,8 @@ let Content = {
     ChildNode.remove() method? Try first getting the <code>div</code> with
     <code>id="piano-keyboard"</code>, then get the <code>childNodes</code> from it.
     Once you have the NodeList containing the  <code>childNodes</code>, you can remove
-    the one with D♭. Finally print the NodeList to the console with for
-    us to evaluate it. For example:
+    the one with D♭. Finally print the NodeList to the console for us to evaluate it.
+    For example:
     <pre><code>
     let pianoDiv = /* Get the div with id="piano-keyboard" *
     let keys = /* Get the child nodes of pianoDiv */
@@ -505,8 +505,8 @@ let Content = {
     <code>id="piano-keyboard"</code>, then get the <code>childNodes</code> from it.
     Once you have the NodeList containing the  <code>childNodes</code>, you can
     add the correct key names modifying the <code>innerText</code> property of each
-    element in the list. Finally print the NodeList to the console with for
-    us to evaluate it. For example:
+    element in the list. Finally print the NodeList to the console for us to evaluate it.
+    For example:
     <pre><code>
     let pianoDiv = /* Get the div with id="piano-keyboard" *
     let keys = /* Get the child nodes of pianoDiv */
