@@ -495,7 +495,7 @@ let Content = {
     title: "Select and remove the right element",
     description: "",
     concepts: ["JavaScript", "getElementById", "childNodes", "innerText", "remove"],
-    order: 13
+    order: 14
   }
 
 };
