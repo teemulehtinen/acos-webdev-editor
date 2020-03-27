@@ -510,7 +510,7 @@ let Content = {
     <pre><code>
     let pianoDiv = /* Get the div with id="piano-keyboard" *
     let keys = /* Get the child nodes of pianoDiv */
-    /* Modify the innerText of each element in the list by adding the correct note */
+    /* Modify the innerText of each element in the list by setting the correct note */
     console.log(keys);
     </code></pre>
     If your code is correct, the notes will appear in the keys.
