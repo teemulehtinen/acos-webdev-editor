@@ -71,10 +71,9 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
       }, 0);
     }
   };
-  this.editorExecute();
-  setTimeout(function () {
+  this.editorExecute(function () {
     cb(self.config.points(self.$element, self.config, accessor));
-  }, 1000);
+  });
 };
 
 ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
@@ -83,7 +82,7 @@ ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
   return '<pre><code>' + this.editor.getValue() + '</code></pre><div>' + $out.html() + '</div>';
 };
 
-ACOSWebdev.prototype.editorExecute = function () {
+ACOSWebdev.prototype.editorExecute = function (cb) {
   var $iframe = $('<iframe src="about:blank"></iframe>');
   this.$editorOutput.empty().append($iframe);
   $iframe.get(0).contentWindow.contents = '<!DOCTYPE html>\n'
@@ -92,10 +91,26 @@ ACOSWebdev.prototype.editorExecute = function () {
     + '<link href="/static/webdev-editor/webdev-editor.css" rel="stylesheet">\n'
     + '<script src="/static/webdev-editor/webdev-execute.js"></script>\n'
     + '</head>\n<body class="execute">\n'
+    + (this.config.preExecuteScript ? ('<script src="' + this.config.preExecuteScript + '"></script>\n') : '')
     + (this.config.preExecuteHtml || '')
-    + '<script>' + (this.config.preExecuteJs || '')
+    + '<script>'
+    + 'try {\n'
+    + (this.config.preExecuteJs || '')
     + this.editor.getValue()
-    + (this.config.postExecuteJs || '') + '</script>\n'
+    + (this.config.postExecuteJs || '')
+    + '} catch (error) {\n'
+    + '  display.err(error.message);\n'
+    + '  throw error;\n'
+    + '}\n'
+    + 'window.parent.postMessage({state: "done"}, "*");\n'
+    + '</script>\n'
+    + (this.config.postExecuteHtml || '')
+    + (this.config.postExecuteScript ? ('<script src="' + this.config.postExecuteScript + '"></script>\n') : '')
     + '</body>\n</html>\n';
+  window.addEventListener('message', function (event) {
+    if (event.data.state == 'done') {
+      cb();
+    }
+  });
   $iframe.attr('src', 'javascript:window["contents"]');
 };

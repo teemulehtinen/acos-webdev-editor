@@ -28,6 +28,9 @@ var display = (function () {
     },
     res: function (html, args) {
       addLine(html, 'res', args);
+    },
+    err: function (html) {
+      addLine(html, 'error text-danger');
     }
   };
 })();
