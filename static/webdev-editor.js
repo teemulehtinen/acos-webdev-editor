@@ -102,15 +102,20 @@ ACOSWebdev.prototype.editorExecute = function (cb) {
     + '  display.err(error.message);\n'
     + '  throw error;\n'
     + '}\n'
+    + 'window.postMessage({state: "done"}, "*");\n'
     + 'window.parent.postMessage({state: "done"}, "*");\n'
     + '</script>\n'
     + (this.config.postExecuteHtml || '')
     + (this.config.postExecuteScript ? ('<script src="' + this.config.postExecuteScript + '"></script>\n') : '')
     + '</body>\n</html>\n';
-  window.addEventListener('message', function (event) {
+  function onDone(event) {
     if (event.data.state == 'done') {
+      window.removeEventListener('message', onDone);
+      var h = $iframe.get(0).contentWindow.document.body.scrollHeight;
+      $iframe.css('height', h + 10 + 'px');
       cb();
     }
-  });
+  }
+  window.addEventListener('message', onDone);
   $iframe.attr('src', 'javascript:window["contents"]');
 };
