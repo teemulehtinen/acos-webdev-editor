@@ -1,6 +1,7 @@
 var display = (function () {
 
   var element = undefined;
+  var code = undefined;
 
   function addLine(html, cls, args) {
     if (element === undefined) {
@@ -31,6 +32,18 @@ var display = (function () {
     },
     err: function (html) {
       addLine(html, 'error text-danger');
+    },
+    showCode: function (id) {
+      let element = document.getElementById(id);
+      if (code === undefined) {
+        code = document.createElement('textarea');
+        code.classList.add('show-code');
+        code.disabled = true;
+        document.body.insertBefore(code, element);
+      }
+      code.style.height = null;
+      code.textContent = element.outerHTML;
+      code.style.height = code.scrollHeight + 3 + 'px';
     }
   };
 })();
