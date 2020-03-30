@@ -577,6 +577,69 @@ let Content = {
     description: "",
     concepts: ["JavaScript", "getElementById", "childNodes", "innerText", "modify"],
     order: 14
+  },
+
+  events: {
+    instructions: `Now we want to upgrade our keyboard. We would like to show the
+    note names on the buttons only when the mouse pointer enters the button, and remove them
+    when the mouse pointer leaves the button. For this purpose we can use the events "mouseenter"
+    and "mosueleave". Complete the code below so the on "mouseenter" event the
+    <code>innerText</code> is set, and on "mouseleave" the <code>innerText</code> is removed.
+    After running the code you can hover over the buttons to see what happens.  `,
+    initialJs: `let buttonsIds = ['C', 'C#', 'D', 'D#', 'E'];
+for(let i = 0; i < buttonsIds.length; i++) {
+    let noteButton = document.getElementById(buttonsIds[i]);
+    let innerText = buttonsIds[i];
+    noteButton.addEventListener('add the right event type here', e => {
+        /* Add the innerText to the note button */
+    });
+    noteButton.addEventListener('add the right event type here', e => {
+        /* Remove the innerText to the note button */
+    });
+}
+    `,
+    preExecuteJs:`
+    let pianoDivInConf = document.createElement('div');
+    pianoDivInConf.innerHTML = '<div id="piano-keyboard" style="text-align: center"><button id="C" type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;"></button><button id="C#" type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"></button><button id="D" type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;"></button><button id="D#" type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"></button><button id="E" type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;"></button></div>';
+    document.body.appendChild(pianoDivInConf);
+    display.res('Trying events');
+    `,
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+        let outputDiv =  document.getElementsByClassName('execute');
+        if(outputDiv.length) outputDiv.style.height = '400px';
+        let buttonsIdsInConfig = ['C', 'C#', 'D', 'D#', 'E'];
+        let buttonsInConfig = buttonsIdsInConfig.map( (button, i) => {
+          return accessor.doc().getElementById(buttonsIdsInConfig[i]);
+        })
+        var mouseenterEvent = new MouseEvent('mouseenter', {
+          'view': window,
+          'bubbles': true,
+          'cancelable': true
+        });
+        var mouseleaveEvent = new MouseEvent('mouseleave', {
+          'view': window,
+          'bubbles': true,
+          'cancelable': true
+        });
+        let p = accessor.testResults(10, function(i , args, res) {
+          res++
+          let points = 0;
+          buttonsInConfig.forEach((button, i) => {
+            button.dispatchEvent(mouseenterEvent);
+            if(button.innerText === buttonsIdsInConfig[i]) points++;
+            button.dispatchEvent(mouseleaveEvent);
+            if(button.innerText === '') points++;
+          });
+          return points;
+        });
+        return { points: p };
+    },
+    maxPoints: 10,
+    title: "modify the elements on mouseenter and mouseleave events",
+    description: "",
+    concepts: ["JavaScript", "mouseenter", "mouseleave"],
+    order: 15
   }
 
 };
