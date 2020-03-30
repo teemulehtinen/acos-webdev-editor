@@ -611,7 +611,7 @@ let Content = {
     order: 15
   },
 
-  events: {
+  'events': {
     instructions: `Now we want to upgrade our keyboard. We would like to show the
     note names on the buttons only when the mouse pointer enters the button, and remove them
     when the mouse pointer leaves the button. For this purpose we can use the events "mouseenter"
