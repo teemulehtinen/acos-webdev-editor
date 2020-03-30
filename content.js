@@ -277,28 +277,17 @@ let Content = {
   note_array: {
     instructions: "Define <code>notes</code> to be an array that contains 7 \"note arrays\" that are pairs of note pitch and it's length, e.g. <code>[\"C5\",\"8n\"]</code>. The array must first have four sixteenth (16n) notes A4, B4, C#4, A4. Then, TWICE the eighth (8n) note E5. And finally, the half (2n) note C#4.",
     initialJs: 'let notes;',
-    postExecuteJs: ';\n'
-    + 'let notesTimed = [];'
-    + 'display.cmd([0,1,2,3,4,5,6].map(i => { return "notes[" + i + "]"; }).join(", "));\n'
-    + 'for (var i = 0; i < 7; i++) {\n'
-    + '  display.res(JSON.stringify((notes || [])[i]), (notes || [])[i]);\n'
-    + '  if (notes && notes[i] && notes[i].length > 1) {\n'
-    + '   notesTimed.push(notes[i]);\n'
-    + '  }\n'
-    + '}\n'
-    + 'document.write("<script src=\\"https://cdnjs.cloudflare.com/ajax/libs/tone/14.5.41/Tone.js\\"></"+"script>");\n'
-    + 'function music() {\n'
-    + '  var synth = new Tone.Synth().toDestination();\n'
-    + '  var pattern = new Tone.Pattern(function(time, note) {\n'
-    + '    synth.triggerAttackRelease(note[0], note[1]);\n'
-    + '  }, notesTimed);\n'
-    + '  pattern.start(0);\n'
-    + '  Tone.Transport.bpm.value = 160;\n'
-    + '  Tone.Transport.start();\n'
-    + '}\n'
-    + 'if (notesTimed.length > 0) {\n'
-    + '  document.write("<button onclick=\\"music();\\">Play music</button>");\n'
-    + '}\n',
+    postExecuteJs: ';'
+      + 'window["sequence"] = [];\n'
+      + 'display.cmd([0,1,2,3,4,5,6].map(i => { return "notes[" + i + "]"; }).join(", "));\n'
+      + 'for (var i = 0; i < 7; i++) {\n'
+      + '  display.res(JSON.stringify((notes || [])[i]), (notes || [])[i]);\n'
+      + '  if (notes && notes[i] && notes[i].length > 1) {\n'
+      + '    window["sequence"].push(notes[i]);\n'
+      + '  }\n'
+      + '}\n',
+    postExecuteHtml: '<button class="tone-play-sequence">Play music</button>\n',
+    postExecuteScript: '/static/webdev/augment-tone.js',
     executeAtStart: false,
     points: function ($element, config, accessor) {
       var correct = [["A4","16n"],["B4","16n"],["C#4","16n"],["A4","16n"],["E5","8n"],["E5","8n"],["C#4","2n"]];
@@ -579,6 +568,46 @@ let Content = {
     order: 14
   },
 
+  adjust_css_classes: {
+    instructions: 'The function named <code>onPlay</code> below is called with the id of a button that was just clicked. '
+      + 'Your task is to set a CSS class <code>last-played</code> to this button that was just clicked. '
+      + 'In addition, you must make it the only button that has this CSS class.',
+    preExecuteHtml: '<div id="keyboard" class="tone-keyboard">\n'
+      + '  <button id="C4">C4</button>\n'
+      + '  <button id="C#4" class="black">C#4</button>\n'
+      + '  <button id="D4">D4</button>\n'
+      + '  <button id="D#4" class="black">D#4</button>\n'
+      + '  <button id="E4">E4</button>\n'
+      + '</div>\n',
+    initialJs: 'function onPlay(id) {\n  console.log(id);\n}\n',
+    postExecuteJs: ';'
+      + 'document.querySelectorAll("#keyboard button").forEach(function (button) {\n'
+      + '  button.addEventListener("click", function (event) {\n'
+      + '    onPlay(event.target.getAttribute("id"));\n'
+      + '    display.showCode("keyboard");\n'
+      + '  });\n'
+      + '});\n'
+      + 'display.showCode("keyboard");\n',
+    postExecuteScript: '/static/webdev/augment-tone.js',
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+      let doc = accessor.doc();
+      let p = 0;
+      ['C4', 'D4', 'D#4', 'C#4', 'E4'].forEach(function (id) {
+        let b = doc.getElementById(id);
+        b.click();
+        p += b.classList.contains('last-played') ? 1 : 0;
+        p += doc.querySelectorAll('.last-played').length == 1 ? 1 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Adjust CSS classes",
+    description: "Set CSS classes for elements based on a given element id.",
+    concepts: ["JavaScript", "getElementById", "childNodes", "classes", "modify"],
+    order: 15
+  },
+
   events: {
     instructions: `Now we want to upgrade our keyboard. We would like to show the
     note names on the buttons only when the mouse pointer enters the button, and remove them
@@ -636,12 +665,11 @@ for(let i = 0; i < buttonsIds.length; i++) {
         return { points: p };
     },
     maxPoints: 10,
-    title: "modify the elements on mouseenter and mouseleave events",
+    title: "Modify the elements on mouseenter and mouseleave events",
     description: "",
     concepts: ["JavaScript", "mouseenter", "mouseleave"],
-    order: 15
+    order: 16
   }
-
 };
 
 module.exports = Content;
