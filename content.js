@@ -612,17 +612,17 @@ let Content = {
     instructions: `Now we want to upgrade our keyboard. We would like to show the
     note names on the buttons only when the mouse pointer enters the button, and remove them
     when the mouse pointer leaves the button. For this purpose we can use the events "mouseenter"
-    and "mosueleave". Complete the code below so the on "mouseenter" event the
+    and "mouseleave". Complete the code below so the on "mouseenter" event the
     <code>innerText</code> is set, and on "mouseleave" the <code>innerText</code> is removed.
     After running the code you can hover over the buttons to see what happens.  `,
     initialJs: `let buttonsIds = ['C', 'C#', 'D', 'D#', 'E'];
 for(let i = 0; i < buttonsIds.length; i++) {
     let noteButton = document.getElementById(buttonsIds[i]);
     let innerText = buttonsIds[i];
-    noteButton.addEventListener('add the right event type here', e => {
+    noteButton.addEventListener('add the right event type here', function(e) {
         /* Add the innerText to the note button */
     });
-    noteButton.addEventListener('add the right event type here', e => {
+    noteButton.addEventListener('add the right event type here', function(e) {
         /* Remove the innerText to the note button */
     });
 }
