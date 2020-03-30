@@ -568,10 +568,12 @@ let Content = {
     order: 14
   },
 
-  adjust_css_classes: {
-    instructions: 'The function named <code>onPlay</code> below is called with the id of a button that was just clicked. '
-      + 'Your task is to set a CSS class <code>last-played</code> to this button that was just clicked. '
-      + 'In addition, you must make it the only button that has this CSS class.',
+  'adjust_css_classes': {
+    instructions: 'The function named <code>onPlay</code> below is called with the'
+      + ' <code>id</code>-attribute of a button that was just clicked.'
+      + ' Your task is to set a CSS class <code>last-played</code> to this button that was just clicked.'
+      + ' In addition, you must make it the only button that has this CSS class.'
+      + ' The HTML of the buttons is presented below including changes from the code.',
     preExecuteHtml: '<div id="keyboard" class="tone-keyboard">\n'
       + '  <button id="C4">C4</button>\n'
       + '  <button id="C#4" class="black">C#4</button>\n'
@@ -587,7 +589,8 @@ let Content = {
       + '    display.showCode("keyboard");\n'
       + '  });\n'
       + '});\n'
-      + 'display.showCode("keyboard");\n',
+      + 'display.showCode("keyboard");\n'
+      + 'display.cmd("Automatically test clicking keys C4, D4, D#4, C#4, E4.")',
     postExecuteScript: '/static/webdev/augment-tone.js',
     executeAtStart: true,
     points: function ($element, config, accessor) {
@@ -604,7 +607,7 @@ let Content = {
     maxPoints: 10,
     title: "Adjust CSS classes",
     description: "Set CSS classes for elements based on a given element id.",
-    concepts: ["JavaScript", "getElementById", "childNodes", "classes", "modify"],
+    concepts: ["JavaScript", "classList", "childNodes", "getElementById"],
     order: 15
   },
 
@@ -669,6 +672,37 @@ for(let i = 0; i < buttonsIds.length; i++) {
     description: "",
     concepts: ["JavaScript", "mouseenter", "mouseleave"],
     order: 16
+  },
+
+  'add_event_listener': {
+    instructions: 'Create a new function and add it as an event listener'
+      + ' for the button below. The HTML of the button is also presented.'
+      + ' The new function must call function <code>playMusic</code>.'
+      + ' Try for example <code>playMusic(["E4","D4","C4","D4","E4","E4"]);</code>',
+    preExecuteScript: '/static/webdev/augment-tone.js',
+    preExecuteHtml: '<button id="music-button">Play music</button>\n',
+    preExecuteJs: ''
+      + 'display.showCode("music-button");\n'
+      + 'function playMusic(notes) {\n'
+      + '  display.res("Playing music!", ["music"]);\n'
+      + '  ToneJsLib.playMusic(notes);\n'
+      + '}\n',
+    executeAtStart: true,
+    points: function ($element, config, accessor) {
+      let preclick = accessor.testResults(10, function(i , args, res) {
+        return args[0] == 'music' ? 1 : 0;
+      });
+      accessor.doc().getElementById('music-button').click();
+      let p = accessor.testResults(10, function(i, args, res) {
+        return i >= preclick ? 10 : 0;
+      });
+      return { points: p };
+    },
+    maxPoints: 10,
+    title: "Add event listener",
+    description: "Create function and add as an event listener.",
+    concepts: ["JavaScript", "addEventListener", "getElementById", "function"],
+    order: 17
   }
 };
 
