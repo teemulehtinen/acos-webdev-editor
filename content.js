@@ -598,9 +598,11 @@ let Content = {
       let p = 0;
       ['C4', 'D4', 'D#4', 'C#4', 'E4'].forEach(function (id) {
         let b = doc.getElementById(id);
-        b.click();
-        p += b.classList.contains('last-played') ? 1 : 0;
-        p += doc.querySelectorAll('.last-played').length == 1 ? 1 : 0;
+        if (b) {
+          b.click();
+          p += b.classList.contains('last-played') ? 1 : 0;
+          p += doc.querySelectorAll('.last-played').length == 1 ? 1 : 0;
+        }
       });
       return { points: p };
     },
