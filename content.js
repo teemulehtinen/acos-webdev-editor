@@ -569,11 +569,16 @@ let Content = {
   },
 
   'adjust_css_classes': {
-    instructions: 'The function named <code>onPlay</code> below is called with the'
-      + ' <code>id</code>-attribute of a button that was just clicked.'
-      + ' Your task is to set a CSS class <code>last-played</code> to this button that was just clicked.'
-      + ' In addition, you must make it the only button that has this CSS class.'
-      + ' The HTML of the buttons is presented below including changes from the code.',
+    instructions: 'Whenever a button is clicked the function onPlay(id) that is'
+      + ' given below is called. As the parameter <code>id</code> it receives'
+      + ' the attribute id of the button that was just clicked. You can use this'
+      + ' id to decide which of the button elements was clicked. Your task is to'
+      + ' edit the function body so that you set a CSS class <code>last-played</code>'
+      + ' to the last button that was clicked. Note, that multiple buttons can be'
+      + ' clicked and only the last one should have the class at any time.'
+      + ' Once you click "Run & Grade" the automatic grader clicks some buttons'
+      + ' to check the result. After that, you can also click the buttons yourself'
+      + ' to see how your code behaves.',
     preExecuteHtml: '<div id="keyboard" class="tone-keyboard">\n'
       + '  <button id="C4">C4</button>\n'
       + '  <button id="C#4" class="black">C#4</button>\n'
