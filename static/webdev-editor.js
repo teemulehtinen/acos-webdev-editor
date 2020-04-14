@@ -79,8 +79,18 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
 ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
   var $out = $(this.$editorOutput.find('iframe').get(0).contentWindow.document.body);
   $out.find('script').remove();
-  return '<pre><code>' + this.editor.getValue() + '</code></pre><div>' + $out.html() + '</div>';
+  return '<pre><code>' + this.esc(this.editor.getValue()) + '</code></pre><div>' + $out.html() + '</div>';
 };
+
+ACOSWebdev.prototype.esc = function (str) {
+  if (str) {
+    var rep = {'&': '&amp;', '<': '&lt;', '>': '&gt;'};
+    return str.replace(/[&<>]/g, function (ch) {
+      return rep[ch] || ch;
+    });
+  }
+  return str;
+}
 
 ACOSWebdev.prototype.editorExecute = function (cb) {
   var $iframe = $('<iframe src="about:blank"></iframe>');
