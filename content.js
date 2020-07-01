@@ -335,26 +335,13 @@ let Content = {
     order: 12
   },
 
-  query_selector_all: {
-    instructions: `The text of the pizza toppings is wrong, help us fix it by setting
-    the correct text (Basilica, Tomato, Mozzarella, Ham).
-    Find all the <code>li</code> elements within the <code>ul</code> element with
-    <code>id="pizza-toppings"</code> using the <code>document.querySelectorAll()</code>
-    method. Then fix the <em>innerText</em> of each element. The grader does not care
-    if you are using upper case letters or not, so don't worry about that.
-    Finally print the NodeList to the console. For example:
-    <pre><code>
-    let toppings = document.querySelectorAll(/*your code here*/);
-    /*Go through the Nodes in the toppings variable and set the right innerText*/
-    /*......*/
-    console.log(toppings);
-    </code></pre>
-    If your code is correct, the names in the list below the editor will change.
-    Testing with the dev tools console on the exercise itself might not give the
-    expected results and might also break the grading. For this reason we advise
-    you to copy the following code into an empty HTML file, and test your solution
-    in there by opening it within with the browser and using the developer tools
-    console:
+  find_the_right_element: {
+    instructions: `
+    We have some really amazing blogs, but not as amazing web developers... They are trying to write a function that given a blog <code>id</code>
+    returns the element that has <code>className</code> <code>"content"</code> and is child of the <code>div</code> with the given blog <code>id</code>.
+    They have managed to write part of the function but they are still missing something. Belowe here is the HTML code of the page with our amazing blogs,
+    if you want to do some tests you can also copy-paste it to your own file and test with it in the developer console. Click "Run & Grade" When you think 
+    that your function is ready. 
     <pre><code>
     &lt;!DOCTYPE html&gt;
     &lt;html lang="en"&gt;
@@ -363,46 +350,100 @@ let Content = {
     &emsp;&emsp;&lt;meta content="utf-8" http-equiv="encoding"&gt;
     &emsp;&lt;/head&gt;
     &emsp;&lt;body&gt;
-    &emsp;&emsp;&lt;h3&gt;Pizza toppings:&lt;/h3&gt;
-    &emsp;&emsp;&lt;ul id="pizza-toppings"&gt;
-    &emsp;&emsp;&emsp;&lt;li&gt;Batsilica&lt;/li&gt;
-    &emsp;&emsp;&emsp;&lt;li&gt;Tomtato&lt;/li&gt;
-    &emsp;&emsp;&emsp;&lt;li&gt;Morezarella&lt;/li&gt;
-    &emsp;&emsp;&emsp;&lt;li&gt;Hamster&lt;/li&gt;
-    &emsp;&emsp;&lt;/ul&gt;
+    &emsp;&emsp;&lt;h2&gt;Our Amazing Blogs&lt;/h2&gt;
+    &emsp;&emsp;&lt;div id="blog-1"&gt;
+    &emsp;&emsp;&emsp;&lt;h3&gt;How to prepare the perfect pizza&lt;/h3&gt;
+    &emsp;&emsp;&emsp;&lt;p class="content"&gt;
+    The secret for preparing the perfect pizza is.... #!/*?@, and ####@@@!&lt/br&gt;
+    So you just have to $%!?#**- it!&lt/br&gt;
+    &lt;u&gt;Upgrade to Pro to uncover the full post&lt;/u&gt;
+    &emsp;&emsp;&emsp;&lt;/p&gt;
+    &emsp;&emsp;&lt;/div&gt;
+    &emsp;&emsp;&lt;div id="blog-2"&gt;
+    &emsp;&emsp;&emsp;&lt;h3&gt;My life as a shrimp&lt;/h3&gt;
+    &emsp;&emsp;&emsp;&lt;p class="content"&gt;
+    Few years back I got tired of all the pressure put on me just for the fact of being a human being.
+    Why does society expect you to behave like a person just for the fact of being one?!
+    So I decided to turn myself into a shrimp and what happend next is amazing...&lt/br&gt;
+    &lt;u&gt;Upgrade to Pro to uncover the full post&lt;/u&gt;
+    &emsp;&emsp;&emsp;&lt;/p&gt;
+    &emsp;&emsp;&lt;/div&gt;
     &emsp;&lt;/body&gt;
     &lt;/html&gt;
     </code></pre>`,
-    initialJs: '',
+    initialJs: 'function getContentFromBlog(blogId) {\n'
+    + '\t// Get the right div according to the given blogid\n'
+    + '\tlet blog = "Replace this string with the expression to get the blog div";\n'
+    + '\t// Get the HTML element with content class from the blog div\n'
+    + '\tlet content = "Replace this string with the expression to get the element with content class";\n'
+    + '\t// Write the return statement to return content\n'
+    + '}',
     preExecuteJs:`
-    let consolePrint = [];
-    const originalLog = console.log;
-    console.log = function(msg) {
-      originalLog(msg);
-      display.res(msg, [msg[0].innerText, msg[1].innerText, msg[2].innerText, msg[3].innerText]);
-    };
-    let listDiv = document.createElement('div');
-    listDiv.innerHTML = '<h3>Pizza toppings:</h3><ul id="pizza-toppings"><li>Batsilica</li><li>Tomtato</li><li>Morezarella</li><li>Hamster</li></ul>'
-    document.body.appendChild(listDiv)
-    `,
+    let heading = document.createElement('h2');
+    heading.innerText = 'Our Amazing Blogs:'
+    let blog1 = document.createElement('div');
+    blog1.id = 'blog-1';
+    let title1 = document.createElement('h3');
+    title1.innerText = 'How to prepare the perfect pizza';
+    blog1.appendChild(title1);
+    let content1 = document.createElement('p');
+    content1.className = 'content';
+    let content1InnerHTML = 'The secret for preparing the perfect pizza is.... #!/*?@, and ####@@@!</br>So you just have to $%!?#**! it!</br><u>Upgrade to Pro to uncover the full post</u>';
+    content1.innerHTML = content1InnerHTML
+    blog1.appendChild(content1);
+
+    let blog2 = document.createElement('div');
+    blog2.id = 'blog-2';
+    let title2 = document.createElement('h3');
+    title2.innerText = 'My life as a shrimp';
+    blog2.appendChild(title2);
+    let content2 = document.createElement('p');
+    content2.className = 'content';
+    let content2InnerHTML = 'Few years back I got tired of all the pressure put on me just for the fact of being a human being. Why does society expect you to behave like a person just for the fact of being one?! So I decided to turn myself into a shrimp and what happend next is amazing...</br><u>Upgrade to Pro to uncover the full post</u>.';
+    content2.innerHTML = content2InnerHTML
+    blog2.appendChild(content2);
+
+    document.body.appendChild(heading);
+    document.body.appendChild(blog1);
+    document.body.appendChild(blog2);
+
+    let returnedContent1 = getContentFromBlog(blog1.id);
+    let returnedContent2 = getContentFromBlog(blog2.id);
+
+    let functionReturns = returnedContent1 || returnedContent2
+
+    if (functionReturns) {
+      let returnedContentsInnerHTML = [ returnedContent1[0].innerHTML, returnedContent2[0].innerHTML];
+      let expectedinnerHTML = [ content1InnerHTML, content2InnerHTML ]
+      display.res("At least one function is returning a value. Testing content... Open the developer tools console to see the logs", [returnedContentsInnerHTML, expectedinnerHTML]);
+    } else {
+      display.cmd("Complete the function and remember to add the return statement at the end")
+    }`,
     executeAtStart: true,
     points: function ($element, config, accessor) {
-        let correctNames = [ 'BASILICA', 'TOMATO', 'MOZZARELLA', 'HAM'];
         let p = accessor.testResults(10, function(i , args, res) {
           let points = 0;
-          args.forEach((item, i) => {
-            if(item.toUpperCase() === correctNames[i]) {
-              points += 2.5;
+          args[0].forEach( (arg, i) => {
+            console.log('Testing content', i);   
+            let received = arg;
+            let expected = args[1][i];
+            if(received === expected) {
+              console.log('Content tested succesfully');
+              points += config.maxPoints/args[0].length
+            } else {
+              console.warn('Testing content failed');
+              console.warn('Expected: ', expected);
+              console.warn('Received: ', received);
             }
-          });
+          })
           return points;
         });
         return { points: p };
     },
     maxPoints: 10,
-    title: "Select and modify the right element",
+    title: "Find the right element",
     description: "",
-    concepts: ["JavaScript", "querySelectorAll", "id", "innerText"],
+    concepts: ["JavaScript", "querySelectorAll", "getElementById", "id"],
     order: 13
   },
 
