@@ -449,19 +449,14 @@ let Content = {
 
   remove_element: {
     instructions: `Our virtual piano does not work properly, there seems to be a
-    wrong key in it (D♭). Can you remove the wrong key using the
-    ChildNode.remove() method? Try first getting the <code>div</code> with
-    <code>id="piano-keyboard"</code>, then get the <code>childNodes</code> from it.
-    Once you have the NodeList containing the  <code>childNodes</code>, you can remove
-    the one with D♭. Finally print the NodeList to the console for us to evaluate it.
-    For example:
-    <pre><code>
-    let pianoDiv = /* Get the div with id="piano-keyboard" *
-    let keys = /* Get the child nodes of pianoDiv */
-    /* Remove the D♭ key from keys */
-    console.log(keys);
-    </code></pre>
-    If your code is correct, the D♭ key will disappear.
+    wrong key in it. Can you help us to complete the function that removes a key according to the given <code>keyValue</code>? 
+    Try first getting the <code>div</code> with <code>id</code> "piano-keyboard", then get the <code>childNodes</code> from it.
+    Once you have the NodeList containing the  <code>childNodes</code>, you can remove the one with value corresponding to the <code>keyValue</code>
+    parameter. Remember that the NodeList is an object.
+    For some refresher on how to get keys and values from objects you can check these: 
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries">Object.entries()</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">Object.values()</a>
+
     Testing with the dev tools console on the exercise itself might not give the
     expected results and might also break the grading. For this reason we advise
     you to copy the following code into an empty HTML file, and test your solution
@@ -475,48 +470,51 @@ let Content = {
     &emsp;&lt;/head&gt;
     &emsp;&lt;body&gt;
     &emsp;&emsp;&lt;div id="piano-keyboard"&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;C&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;C#&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D♭&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;D&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D#&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" style="width: 50px; height: 120px; padding: 2px;"&gt;E&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="C" style="width: 50px; height: 120px; padding: 2px;"&gt;C&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="C#" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;C#&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="D♭" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D♭&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="D" style="width: 50px; height: 120px; padding: 2px;"&gt;D&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="D#" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D#&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="E" style="width: 50px; height: 120px; padding: 2px;"&gt;E&lt;/button&gt;
     &emsp;&emsp;&lt;/div&gt;
     &emsp;&lt;/body&gt;
     &lt;/html&gt;
     </code></pre>`,
-    initialJs: '',
+    initialJs: 'function removePianoKey(keyValue) {\n'
+    + '\t// Get the piano keyboard div using its id\n'
+    + '\tlet keyboard = "Replace this string with the expression to get the keyboard div";\n'
+    + '\t// Get the childNodes of the keyboard\n'
+    + '\tlet keys = "Replace this string with the expression to get the childNodes of the keyboard";\n'
+    + '\t// Then find and remove the key from the childNodes array using the keyValue argument\n'
+    + '\t\n'
+    + '\treturn keyboard;\n'
+    + '}',
     preExecuteJs:`
-    let consolePrint = [];
-    const originalLog = console.log;
-    console.log = function(msg) {
-      originalLog(msg);
-      let rightFormat = typeof msg === 'object';
-      display.cmd('Return value is in the right form: ' + rightFormat);
-      if(!rightFormat) display.cmd('The returend value should be a NodeList');
-      else if (msg.length !== 5) display.cmd('The number of elements in returned NodeList should be 5 but it is: ' + msg.length);
-      else {
-        display.cmd('Checking keys in returned NodeList:');
-        let keysInList = [msg[0].innerText, msg[1].innerText, msg[2].innerText, msg[3].innerText, msg[4].innerText];
-        display.res(keysInList, keysInList);
-      }
-    };
     let pianoDivInConf = document.createElement('div');
-    pianoDivInConf.innerHTML = '<div id="piano-keyboard" style="text-align: center"><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">C</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">C#</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">D♭</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">D</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">D#</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">E</button></div>';
+    pianoDivInConf.id = 'piano-keyboard';
+    pianoDivInConf.style = 'text-align: center';
+    let keys = ['C', 'C#', 'D♭', 'D', 'D#', 'E'];
+    keys.forEach(key => {
+      let keyButton = document.createElement('button');
+      keyButton.value = key;
+      keyButton.innerText = key;
+      keyButton.style = key.length === 1? 'width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;' : 'width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;';
+      pianoDivInConf.appendChild(keyButton);
+    });
     document.body.appendChild(pianoDivInConf);
-    `,
+
+    let returnedKeyboard = removePianoKey('D♭');
+
+    if (typeof(returnedKeyboard) === 'object') {
+      let returnedKeys = returnedKeyboard.childNodes;
+      display.res("Checking the keyboard keys...", returnedKeys);
+    } else {
+      display.cmd("Did yuu return the keyboard div?")
+    }`,
     executeAtStart: true,
     points: function ($element, config, accessor) {
-        let outputDiv =  document.getElementsByClassName('execute');
-        if(outputDiv.length) outputDiv.style.height = '400px';
-        let correctKeys = [ 'C', 'C#', 'D', 'D#', 'E'];
         let p = accessor.testResults(10, function(i , args, res) {
-          let points = 0;
-          args.forEach((item, i) => {
-            if(item.toUpperCase() === correctKeys[i]) {
-              points += 2.5;
-            }
-          });
+          let points = Object.values(args).some(key => key.value === 'D♭')? 0 : config.maxPoints;
           return points;
         });
         return { points: p };
