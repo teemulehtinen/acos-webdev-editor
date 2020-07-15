@@ -506,7 +506,7 @@ let Content = {
     let returnedKeyboard = removePianoKey('D♭');
 
     if (typeof(returnedKeyboard) === 'object') {
-      let returnedKeys = returnedKeyboard.childNodes;
+      let returnedKeys = Object.values(returnedKeyboard.childNodes).map(item => item.value) ;
       display.res("Checking the keyboard keys...", returnedKeys);
     } else {
       display.cmd("Did yuu return the keyboard div?")
@@ -514,7 +514,8 @@ let Content = {
     executeAtStart: true,
     points: function ($element, config, accessor) {
         let p = accessor.testResults(10, function(i , args, res) {
-          let points = Object.values(args).some(key => key.value === 'D♭')? 0 : config.maxPoints;
+          let correctKeys = ['C', 'C#', 'D', 'D#', 'E'];
+          let points = args.some((key, i) => key !== correctKeys[i])? 0 : config.maxPoints;
           return points;
         });
         return { points: p };
@@ -527,26 +528,7 @@ let Content = {
   },
 
   modify_element_innerText: {
-    instructions: `Our virtual piano now has lost the notes from the keys and it
-    is very sad. There should be C, C#, D, D# and E, but instead there is just ":(". Can you help us
-    setting back the correct key names? Try first getting the <code>div</code> with
-    <code>id="piano-keyboard"</code>, then get the <code>childNodes</code> from it.
-    Once you have the NodeList containing the  <code>childNodes</code>, you can
-    add the correct key names modifying the <code>innerText</code> property of each
-    element in the list. Finally print the NodeList to the console for us to evaluate it.
-    For example:
-    <pre><code>
-    let pianoDiv = /* Get the div with id="piano-keyboard" *
-    let keys = /* Get the child nodes of pianoDiv */
-    /* Modify the innerText of each element in the list by setting the correct note */
-    console.log(keys);
-    </code></pre>
-    If your code is correct, the notes will appear in the keys.
-    Testing with the dev tools console on the exercise itself might not give the
-    expected results and might also break the grading. For this reason we advise
-    you to copy the following code into an empty HTML file, and test your solution
-    in there by opening it within with the browser and using the developer tools
-    console:
+    instructions: `
     <pre><code>
     &lt;!DOCTYPE html&gt;
     &lt;html lang="en" dir="ltr"&gt;
@@ -564,38 +546,56 @@ let Content = {
     &emsp;&lt;/body&gt;
     &lt;/html&gt;
     </code></pre>`,
-    initialJs: '',
+    initialJs: 'function setKeyboard(keysValues) {\n'
+    + '\t// Get the piano keyboard div using its id\n'
+    + '\tlet keyboard = "Replace this string with the expression to get the keyboard div";\n'
+    + '\t// Get the childNodes of the keyboard\n'
+    + '\tlet keys = "Replace this string with the expression to get the childNodes of the keyboard";\n'
+    + '\t// Set the both the value and the innerText attributes of the keys to the given keyValues argument\n'
+    + '\t\n'
+    + '\treturn keyboard;\n'
+    + '}',
     preExecuteJs:`
-    let consolePrint = [];
-    const originalLog = console.log;
-    console.log = function(msg) {
-      originalLog(msg);
-      let rightFormat = typeof msg === 'object';
-      display.cmd('Return value is in the right form: ' + rightFormat);
-      if(!rightFormat) display.cmd('The returend value should be a NodeList');
-      else if (msg.length !== 5) display.cmd('The number of elements in returned NodeList should be 5 but it is: ' + msg.length);
-      else {
-        display.cmd('Checking keys in returned NodeList:');
-        let keysInList = [msg[0].innerText, msg[1].innerText, msg[2].innerText, msg[3].innerText, msg[4].innerText];
-        display.res(keysInList, keysInList);
-      }
-    };
     let pianoDivInConf = document.createElement('div');
-    pianoDivInConf.innerHTML = '<div id="piano-keyboard" style="text-align: center"><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">:(</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">:(</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">:(</button><button type="button" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;">:(</button><button type="button" style="width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;">:(</button></div>';
+    pianoDivInConf.id = 'piano-keyboard';
+    pianoDivInConf.style = 'text-align: center';
+    let keys = [':(', ':(', ':(', ':(', ':('];
+    keys.forEach((key, i) => {
+      let keyButton = document.createElement('button');
+      keyButton.value = keys[i];
+      keyButton.innerText = keys[i];
+      keyButton.style = (i+1)%2 === 1? 'width: 50px; height: 120px; padding: 2px; background-color: #FFFFFF;' : 'width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;';
+      pianoDivInConf.appendChild(keyButton);
+    });
     document.body.appendChild(pianoDivInConf);
-    `,
+
+    let correctKeys = ['C', 'C#', 'D', 'D#', 'E'];
+    let returnedKeyboard = setKeyboard(correctKeys);
+
+    if (typeof(returnedKeyboard) === 'object') {
+      let returnedKeysValues = Object.values(returnedKeyboard.childNodes).map(item => item.value);
+      let returnedKeysInnertext = Object.values(returnedKeyboard.childNodes).map(item => item.innerText);
+      display.res("Checking the keyboard keys...", [returnedKeysValues, returnedKeysInnertext]);
+    } else {
+      display.cmd("Did yuu return the keyboard div?")
+    }`,
     executeAtStart: true,
     points: function ($element, config, accessor) {
-        let outputDiv =  document.getElementsByClassName('execute');
-        if(outputDiv.length) outputDiv.style.height = '400px';
-        let correctKeysInConf = [ 'C', 'C#', 'D', 'D#', 'E'];
         let p = accessor.testResults(10, function(i , args, res) {
           let points = 0;
-          args.forEach((item, i) => {
-            if(item.toUpperCase() === correctKeysInConf[i]) {
-              points += 2.5;
-            }
-          });
+          let correctKeys = ['C', 'C#', 'D', 'D#', 'E'];
+          let correctValues = args[0].every((item, i) => item === correctKeys[i]);
+          let correctInnerText = args[1].every((item, i) => item === correctKeys[i]);
+          if (correctValues) {
+            points += config.maxPoints / 2;
+          } else {
+            console.log('Did you change all the values of the keyboard keys?', args[0]);
+          }
+          if (correctInnerText) {
+            points += config.maxPoints / 2;
+          } else {
+            console.log('Did you change all the innerText of the keyboard keys?', args[1]);
+          }
           return points;
         });
         return { points: p };
