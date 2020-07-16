@@ -338,7 +338,7 @@ let Content = {
   find_the_right_element: {
     instructions: `
     We have some really amazing blogs, but not as amazing web developers... They are trying to write a function that given a blog <code>id</code>
-    returns the element that has <code>className</code> <code>"content"</code> and is child of the <code>div</code> with the given blog <code>id</code>.
+    returns the elements that has <code>className</code> <code>"content"</code> and is child of the <code>div</code> with the given blog <code>id</code>.
     They have managed to write part of the function but they are still missing something. Belowe here is the HTML code of the page with our amazing blogs,
     if you want to do some tests you can also copy-paste it to your own file and test with it in the developer console. Click "Run & Grade" When you think 
     that your function is ready. 
@@ -355,7 +355,9 @@ let Content = {
     &emsp;&emsp;&emsp;&lt;h3&gt;How to prepare the perfect pizza&lt;/h3&gt;
     &emsp;&emsp;&emsp;&lt;p class="content"&gt;
     The secret for preparing the perfect pizza is.... #!/*?@, and ####@@@!&lt/br&gt;
-    So you just have to $%!?#**- it!&lt/br&gt;
+    So you just have to $%!?#**- it!
+    &emsp;&emsp;&emsp;&lt;/p&gt;
+    &emsp;&emsp;&emsp;&lt;p class="content"&gt;
     &lt;u&gt;Upgrade to Pro to uncover the full post&lt;/u&gt;
     &emsp;&emsp;&emsp;&lt;/p&gt;
     &emsp;&emsp;&lt;/div&gt;
@@ -364,7 +366,9 @@ let Content = {
     &emsp;&emsp;&emsp;&lt;p class="content"&gt;
     Few years back I got tired of all the pressure put on me just for the fact of being a human being.
     Why does society expect you to behave like a person just for the fact of being one?!
-    So I decided to turn myself into a shrimp and what happend next is amazing...&lt/br&gt;
+    So I decided to turn myself into a shrimp and what happend next is amazing...
+    &emsp;&emsp;&emsp;&lt;/p&gt;
+    &emsp;&emsp;&emsp;&lt;p class="content"&gt;
     &lt;u&gt;Upgrade to Pro to uncover the full post&lt;/u&gt;
     &emsp;&emsp;&emsp;&lt;/p&gt;
     &emsp;&emsp;&lt;/div&gt;
@@ -375,33 +379,53 @@ let Content = {
     + '\t// Get the right div according to the given blogid\n'
     + '\tlet blog = "Replace this string with the expression to get the blog div";\n'
     + '\t// Get the HTML element with content class from the blog div\n'
-    + '\tlet content = "Replace this string with the expression to get the element with content class";\n'
+    + '\tlet content = "Replace this string with the expression to get the elements with \'content\' class from the blog div";\n'
     + '\t// Write the return statement to return content\n'
     + '}',
     preExecuteJs:`
     let heading = document.createElement('h2');
     heading.innerText = 'Our Amazing Blogs:'
+
     let blog1 = document.createElement('div');
     blog1.id = 'blog-1';
+
     let title1 = document.createElement('h3');
     title1.innerText = 'How to prepare the perfect pizza';
     blog1.appendChild(title1);
+
     let content1 = document.createElement('p');
     content1.className = 'content';
-    let content1InnerHTML = 'The secret for preparing the perfect pizza is.... #!/*?@, and ####@@@!</br>So you just have to $%!?#**! it!</br><u>Upgrade to Pro to uncover the full post</u>';
-    content1.innerHTML = content1InnerHTML
+    let content1InnerHTML = 'The secret for preparing the perfect pizza is.... #!/*?@, and ####@@@!</br>So you just have to $%!?#**! it!';
+    content1.innerHTML = content1InnerHTML;
     blog1.appendChild(content1);
+
+
+    let content1_2 = document.createElement('p');
+    content1_2.className = 'content';
+    let content1_2InnerHTML =  '....';
+    content1_2.innerHTML = content1_2InnerHTML;
+    blog1.appendChild(content1_2);
+
+    let underlined1 = document.createElement('p');
+    underlined1.innerHTML = '<u>Upgrade to Pro to uncover the full post</u>';
+    blog1.appendChild(underlined1);
 
     let blog2 = document.createElement('div');
     blog2.id = 'blog-2';
+
     let title2 = document.createElement('h3');
     title2.innerText = 'My life as a shrimp';
     blog2.appendChild(title2);
+
     let content2 = document.createElement('p');
     content2.className = 'content';
-    let content2InnerHTML = 'Few years back I got tired of all the pressure put on me just for the fact of being a human being. Why does society expect you to behave like a person just for the fact of being one?! So I decided to turn myself into a shrimp and what happend next is amazing...</br><u>Upgrade to Pro to uncover the full post</u>.';
+    let content2InnerHTML = 'Few years back I got tired of all the pressure put on me just for the fact of being a human being. Why does society expect you to behave like a person just for the fact of being one?! So I decided to turn myself into a shrimp and what happend next is amazing...';
     content2.innerHTML = content2InnerHTML
     blog2.appendChild(content2);
+    
+    let underlined2 = document.createElement('p');
+    underlined2.innerHTML = '<u>Upgrade to Pro to uncover the full post</u>';
+    blog2.appendChild(underlined2);
 
     document.body.appendChild(heading);
     document.body.appendChild(blog1);
@@ -413,8 +437,8 @@ let Content = {
     let functionReturns = returnedContent1 || returnedContent2
 
     if (functionReturns) {
-      let returnedContentsInnerHTML = [ returnedContent1[0].innerHTML, returnedContent2[0].innerHTML];
-      let expectedinnerHTML = [ content1InnerHTML, content2InnerHTML ]
+      let returnedContentsInnerHTML = [ returnedContent1[0].innerHTML, returnedContent1[1].innerHTML, returnedContent2[0].innerHTML];
+      let expectedinnerHTML = [ content1InnerHTML, content1_2InnerHTML, content2InnerHTML ]
       display.res("At least one function is returning a value. Testing content... Open the developer tools console to see the logs", [returnedContentsInnerHTML, expectedinnerHTML]);
     } else {
       display.cmd("Complete the function and remember to add the return statement at the end")
