@@ -495,10 +495,10 @@ let Content = {
     &emsp;&lt;body&gt;
     &emsp;&emsp;&lt;div id="piano-keyboard"&gt;
     &emsp;&emsp;&emsp;&lt;button type="button" value="C" style="width: 50px; height: 120px; padding: 2px;"&gt;C&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" value="C#" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;C#&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" value="D♭" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D♭&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="C#" style="width: 50px; height: 100px; background-color: #000; color: #8C8A93; padding: 2px; line-height: 10;"&gt;C#&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="D♭" style="width: 50px; height: 100px; background-color: #000; color: #8C8A93; padding: 2px; line-height: 10;"&gt;D♭&lt;/button&gt;
     &emsp;&emsp;&emsp;&lt;button type="button" value="D" style="width: 50px; height: 120px; padding: 2px;"&gt;D&lt;/button&gt;
-    &emsp;&emsp;&emsp;&lt;button type="button" value="D#" style="width: 50px; height: 100px; background-color: #000;color: #FFFFFF; padding: 2px; line-height: 10;"&gt;D#&lt;/button&gt;
+    &emsp;&emsp;&emsp;&lt;button type="button" value="D#" style="width: 50px; height: 100px; background-color: #000; color: #8C8A93; padding: 2px; line-height: 10;"&gt;D#&lt;/button&gt;
     &emsp;&emsp;&emsp;&lt;button type="button" value="E" style="width: 50px; height: 120px; padding: 2px;"&gt;E&lt;/button&gt;
     &emsp;&emsp;&lt;/div&gt;
     &emsp;&lt;/body&gt;
@@ -527,19 +527,34 @@ let Content = {
     });
     document.body.appendChild(pianoDivInConf);
 
-    let returnedKeyboard = removePianoKey('D♭');
+    let returnedKeyBoard = removePianoKey('D♭');
+    let correctKeyRemoved = Object.values(returnedKeyBoard.childNodes).every(key => key.value !== 'D♭');
 
-    if (typeof(returnedKeyboard) === 'object') {
-      let returnedKeys = Object.values(returnedKeyboard.childNodes).map(item => item.value) ;
-      display.res("Checking the keyboard keys...", returnedKeys);
+    const checkWithAllKeys = () => {
+      display.cmd("Testing with other keys...");
+      keys.splice(keys.findIndex(item => item === 'D♭'), 1);
+      return keys.map(item => {
+        return Object.values(removePianoKey(item).childNodes).map(key => key.value)
+      });
+    }
+
+    if (correctKeyRemoved) {
+      display.cmd("Correct key removed");
+      display.res("Checking the keyboard keys... Open the developer tools console to see the logs", checkWithAllKeys());
+      display.cmd("Hups, did we remove a bit too many keys... No problem");
     } else {
-      display.cmd("Did yuu return the keyboard div?")
+      display.cmd("Did yuu remove the key using the keyValue parameter and returned the keyboard div?");
     }`,
     executeAtStart: true,
     points: function ($element, config, accessor) {
         let p = accessor.testResults(10, function(i , args, res) {
           let correctKeys = ['C', 'C#', 'D', 'D#', 'E'];
-          let points = args.some((key, i) => key !== correctKeys[i])? 0 : config.maxPoints;
+          console.log('Checking that the correct keys have been removed');
+          let points = args.every((item, i) => item.every(key => key !== correctKeys[i]))? 10 : 0;
+          if(points === 0) {
+            let wrongKeyboards = args.filter((item, i) => item.some(key => key === correctKeys[i]));
+            console.log('Some of the keyboards returned the wrong keys', wrongKeyboards);
+          }
           return points;
         });
         return { points: p };
