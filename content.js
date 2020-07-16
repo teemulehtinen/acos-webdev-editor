@@ -338,8 +338,9 @@ let Content = {
   find_the_right_element: {
     instructions: `
     We have some really amazing blogs, but not as amazing web developers... They are trying to write a function that given a blog <code>id</code>
-    returns the elements that has <code>className</code> <code>"content"</code> and is child of the <code>div</code> with the given blog <code>id</code>.
-    They have managed to write part of the function but they are still missing something. Belowe here is the HTML code of the page with our amazing blogs,
+    returns the elements that has <code>className</code> <code>"content"</code> and is child of the <code>div</code> with the given blog <code>id</code>.</br></br>
+
+    They have managed to write part of the function but they are still missing something, can you help us to get it working?. Belowe here is the HTML code of the page with our amazing blogs,
     if you want to do some tests you can also copy-paste it to your own file and test with it in the developer console. Click "Run & Grade" When you think 
     that your function is ready. 
     <pre><code>
@@ -473,13 +474,15 @@ let Content = {
 
   remove_element: {
     instructions: `Our virtual piano does not work properly, there seems to be a
-    wrong key in it. Can you help us to complete the function that removes a key according to the given <code>keyValue</code>? 
+    wrong key in it. Can you help us to complete the function that removes a key according to the given <code>keyValue</code>?</br></br>
+
     Try first getting the <code>div</code> with <code>id</code> "piano-keyboard", then get the <code>childNodes</code> from it.
-    Once you have the NodeList containing the  <code>childNodes</code>, you can remove the one with value corresponding to the <code>keyValue</code>
-    parameter. Remember that the NodeList is an object.
+    Once you have the NodeList containing the  <code>childNodes</code>, you can remove the one with <code>value</code> corresponding to the <code>keyValue</code>
+    parameter. Remember that the NodeList is an object.</br></br>
+
     For some refresher on how to get keys and values from objects you can check these: 
     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries">Object.entries()</a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">Object.values()</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">Object.values()</a></br></br>
 
     Testing with the dev tools console on the exercise itself might not give the
     expected results and might also break the grading. For this reason we advise
@@ -553,7 +556,7 @@ let Content = {
           let points = args.every((item, i) => item.every(key => key !== correctKeys[i]))? 10 : 0;
           if(points === 0) {
             let wrongKeyboards = args.filter((item, i) => item.some(key => key === correctKeys[i]));
-            console.log('Some of the keyboards returned the wrong keys', wrongKeyboards);
+            console.warn('Some of the keyboards returned the wrong keys', wrongKeyboards);
           }
           return points;
         });
@@ -568,6 +571,23 @@ let Content = {
 
   modify_element_innerText: {
     instructions: `
+    Our virtual piano now has lost the notes from the keys and it is very sad. There should be C, C#, D, D#, E, etc... 
+    but instead there is just ":(". Can you help us write a function, that given an array containing the key values, sets them to be the <code>value</code> 
+    and <code>innerText</code> of the keys?</br></br>
+
+    Try first getting the div with id="piano-keyboard", then get the childNodes from it. Once you have the NodeList containing the childNodes, 
+    you can set the correct <code>value</code> and <code>innerText</code> attributes of each key (childNode) accoring to the given keysValues parameter. 
+    Finally return the keyboard div element. Remember that the NodeList is an object.</br></br>
+
+    For some refresher on how to get keys and values from objects you can check these: 
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries">Object.entries()</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">Object.values()</a></br></br>
+
+    Testing with the dev tools console on the exercise itself might not give the
+    expected results and might also break the grading. For this reason we advise
+    you to copy the following code into an empty HTML file, and test your solution
+    in there by opening it within with the browser and using the developer tools
+    console:
     <pre><code>
     &lt;!DOCTYPE html&gt;
     &lt;html lang="en" dir="ltr"&gt;
@@ -608,13 +628,34 @@ let Content = {
     });
     document.body.appendChild(pianoDivInConf);
 
-    let correctKeys = ['C', 'C#', 'D', 'D#', 'E'];
-    let returnedKeyboard = setKeyboard(correctKeys);
+    let correctKeys1 = ['C', 'C#', 'D', 'D#', 'E'];
+    let correctKeys2 = ['F', 'F#', 'G', 'G#', 'A'];
 
-    if (typeof(returnedKeyboard) === 'object') {
-      let returnedKeysValues = Object.values(returnedKeyboard.childNodes).map(item => item.value);
-      let returnedKeysInnertext = Object.values(returnedKeyboard.childNodes).map(item => item.innerText);
-      display.res("Checking the keyboard keys...", [returnedKeysValues, returnedKeysInnertext]);
+    display.cmd('Testing with keys: ' + correctKeys1);
+    let returnedKeyboard = setKeyboard(correctKeys1);
+    try {
+      var returnedKeysValues1 = Object.values(returnedKeyboard.childNodes).map(item => item.value);
+      var returnedKeysInnertext1 = Object.values(returnedKeyboard.childNodes).map(item => item.innerText);
+    } catch (err) {
+      display.cmd('Did you return the keyboard div element?')
+      console.log(err);
+    }
+
+    display.cmd('Testing with keys: ' + correctKeys2);
+    returnedKeyboard = setKeyboard(correctKeys2);
+    try {
+      var returnedKeysValues2 = Object.values(returnedKeyboard.childNodes).map(item => item.value);
+      var returnedKeysInnertext2 = Object.values(returnedKeyboard.childNodes).map(item => item.innerText);
+    } catch (err) {
+      display.cmd('Did you return the keyboard div element?')
+      console.log(err);
+    }
+
+    let returnedKeysValues = [ returnedKeysValues1, returnedKeysValues2];
+    let returnedKeysInnertext = [ returnedKeysInnertext1, returnedKeysInnertext2 ];
+
+    if (returnedKeysValues.some(key => key.length > 0) || returnedKeysInnertext.some(key => key.length > 0)) {
+      display.res("Checking the keyboard keys... Open the developer tools console to see the logs", [returnedKeysValues, returnedKeysInnertext]);
     } else {
       display.cmd("Did yuu return the keyboard div?")
     }`,
@@ -622,18 +663,27 @@ let Content = {
     points: function ($element, config, accessor) {
         let p = accessor.testResults(10, function(i , args, res) {
           let points = 0;
-          let correctKeys = ['C', 'C#', 'D', 'D#', 'E'];
-          let correctValues = args[0].every((item, i) => item === correctKeys[i]);
-          let correctInnerText = args[1].every((item, i) => item === correctKeys[i]);
-          if (correctValues) {
+          let correctKeys1 = ['C', 'C#', 'D', 'D#', 'E'];
+          let correctKeys2 = ['F', 'F#', 'G', 'G#', 'A'];
+          let correctValues1 = args[0][0].every((item, i) => item === correctKeys1[i]);
+          let correctValues2 = args[0][1].every((item, i) => item === correctKeys2[i]);
+
+          let correctInnerText1 = args[1][0].every((item, i) => item === correctKeys1[i]);
+          let correctInnerText2 = args[1][1].every((item, i) => item === correctKeys2[i]);
+
+          console.log('Checking if keys value is set correctly');
+          if (correctValues1 && correctValues2) {
             points += config.maxPoints / 2;
           } else {
-            console.log('Did you change all the values of the keyboard keys?', args[0]);
+            console.warn(`Did you change all the values of the keyboard keys according to the given keysValues parameter? 
+            \nExpected: \n${correctKeys1} \n${correctKeys2} \nReceived: \n${args[0][0]} \n${args[0][1]}`);
           }
-          if (correctInnerText) {
+          console.log('Checking if keys innerText are set correctly');
+          if (correctInnerText1 && correctInnerText2) {
             points += config.maxPoints / 2;
           } else {
-            console.log('Did you change all the innerText of the keyboard keys?', args[1]);
+            console.warn(`Did you change all the innerTexts of the keyboard keys according to the given keysValues parameter? 
+            \nExpected: \n${correctInnerText1} \n${correctInnerText2} \nReceived: \n${args[1][0]} \n${args[1][1]}`);
           }
           return points;
         });
