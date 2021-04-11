@@ -379,7 +379,7 @@ let Content = {
     initialJs: 'function getContentFromBlog(blogId) {\n'
     + '\t// Get the right div according to the given blogid\n'
     + '\tlet blog = "Replace this string with the expression to get the blog div";\n'
-    + '\t// Get the HTML element with content class from the blog div\n'
+    + '\t// Get all elements with content class from the blog div\n'
     + '\tlet content = "Replace this string with the expression to get the elements with \'content\' class from the blog div";\n'
     + '\t// Write the return statement to return content\n'
     + '}',
