@@ -82,6 +82,11 @@ ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
   return '<pre><code>' + this.esc(this.editor.getValue()) + '</code></pre><div>' + $out.html() + '</div>';
 };
 
+ACOSWebdev.prototype.postUpdate = function (points, maxPoints) {
+  var qlcs = qlcjs.generate(this.editor.getValue(), [{ count: 3 }]);
+  console.log(qlcs);
+};
+
 ACOSWebdev.prototype.esc = function (str) {
   if (str) {
     var rep = {'&': '&amp;', '<': '&lt;', '>': '&gt;'};
