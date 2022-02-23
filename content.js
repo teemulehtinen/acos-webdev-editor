@@ -17,14 +17,19 @@ let Content = {
       "}\n",
     executeAtStart: true,
     points: function ($element, config, accessor) {
-      var p = accessor.testResults(5, function (i, args, res) {
+      var p = accessor.testResults(4, function (i, args, res) {
         return args.reduce(function (s, v) {
           return s + v;
         }, 0) == parseInt(res)
-          ? 5
+          ? 4
           : 0;
       });
       return { points: p };
+    },
+    qlcs: {
+      requirePoints: 8,
+      rewardPoints: 2,
+      request: [{ count: 2 }],
     },
     maxPoints: 10,
     title: "Array Sum",

@@ -83,8 +83,12 @@ ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
 };
 
 ACOSWebdev.prototype.postUpdate = function (points, maxPoints) {
-  var qlcs = qlcjs.generate(this.editor.getValue(), [{ count: 3 }]);
-  console.log(qlcs);
+  if (this.config.qlcs) { //&& points >= (this.config.qlcs.requirePoints || 0)) {
+    this.$element.find('.exercise .qlcs').append(SimpleQuizForm(
+      this.config.qlcs.rewardPoints,
+      qlcjs.generate(this.editor.getValue(), this.config.qlcs.request)
+    ));
+  }
 };
 
 ACOSWebdev.prototype.esc = function (str) {
