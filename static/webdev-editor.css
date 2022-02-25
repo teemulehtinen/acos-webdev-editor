@@ -21,6 +21,17 @@
 .acos-webdev-editor .qlcs .qlc label:hover {
   background-color: gainsboro;
 }
+.acos-webdev-editor .qlcs .qlc label.incorrect {
+  background-color: salmon;
+  color: darkred;
+}
+.acos-webdev-editor .qlcs .qlc label.correct {
+  background-color: springgreen;
+  color: green;
+}
+.acos-webdev-editor .qlcs .qlc label .info {
+  margin-left: 2em;
+}
 
 body.execute {
   background-color: gainsboro;

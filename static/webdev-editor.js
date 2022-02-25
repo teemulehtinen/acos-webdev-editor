@@ -84,9 +84,10 @@ ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
 
 ACOSWebdev.prototype.postUpdate = function (points, maxPoints) {
   if (this.config.qlcs) { //&& points >= (this.config.qlcs.requirePoints || 0)) {
-    this.$element.find('.exercise .qlcs').append(SimpleQuizForm(
+    this.$element.find('.exercise .qlcs').html(SimpleQuizForm(
       this.config.qlcs.rewardPoints,
-      qlcjs.generate(this.editor.getValue(), this.config.qlcs.request)
+      qlcjs.generate(this.editor.getValue(), this.config.qlcs.request),
+      (solved, total) => console.log(solved, total),
     ));
   }
 };
