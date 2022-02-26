@@ -244,14 +244,19 @@ let Content = {
     executeAtStart: false,
     points: function ($element, config, accessor) {
       let correct = [5, 4, 3, 2, 1, 0, "Lift off!"];
-      let p = accessor.testResults(10, function (i, args, res) {
+      let p = accessor.testResults(8, function (i, args, res) {
         return correct.every(function (e, i) {
           return args[i] == e;
         })
-          ? 10
+          ? 8
           : 0;
       });
       return { points: p };
+    },
+    qlcs: {
+      requirePoints: 8,
+      rewardPoints: 2,
+      request: [{ count: 3, types: ['LoopEnd', 'VariableDeclaration'], uniqueTypes: true }],
     },
     maxPoints: 10,
     title: "While loop",
