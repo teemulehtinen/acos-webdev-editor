@@ -292,6 +292,37 @@ let Content = {
     order: 9,
   },
 
+  travel_array: {
+    instructions:
+      "Write a function called <code>countWord</code> that takes a search word as the first parameter, and an array of any words as the second parameter. The function must count the number of times the given search word is in the given array.",
+    initialJs: "function countWord(search, words) {\n\treturn 0;\n}",
+    postExecuteJs:
+      ";\n" +
+      "let bank = ['tomato','mozzarella','pineapple'];\n" +
+      "let q = rnd.pick(bank);\n" +
+      "let a = [...Array(8).keys()].map(i => rnd.pick(bank));\n" +
+      "display.cmd('countWord(\"' + q + '\", ' + JSON.stringify(a) + ');');\n" +
+      "display.res(countWord(q, a), [q, a]);\n",
+    executeAtStart: false,
+    points: function ($element, config, accessor) {
+      var p = accessor.testResults(8, function (i, args, res) {
+        return args[1].filter(w => w === args[0]).length === parseInt(res) ? 8 : 0;
+      });
+      return { points: p };
+    },
+    qlcs: {
+      requirePoints: 8,
+      rewardPoints: 2,
+      request: [{ count: 4, types: ['ParameterName', 'ParameterValue', 'LoopEnd', 'VariableDeclaration'], uniqueTypes: true }],
+      input: [{ functionName: 'countWord', parameters: [['a', ['b','a','c']], ['b',['c','a','b']], ['c', ['a','b','c']]] }],
+    },
+    maxPoints: 10,
+    title: "Count word",
+    description: "Count number of times a given search word is in an array of words.",
+    concepts: ["JavaScript", "function", "while", "for", "conditional", "array"],
+    order: 10,
+  },
+
   define_object: {
     instructions:
       "Your task is to define an object to the variable myStuff. It should have the following keys <code>fruit</code>, <code>amount</code>, and <code>pinCode</code>. The keys should have the following values (in corresponding order): <code>'apple'</code>, <code>3</code>, and <code>[1,2,3,4]</code>",
@@ -315,7 +346,7 @@ let Content = {
     title: "Define object",
     description: "Define an object with specific keys and values",
     concepts: ["JavaScript", "variable", "assignment", "object"],
-    order: 10,
+    order: 11,
   },
 
   note_array: {
@@ -361,7 +392,7 @@ let Content = {
     title: "Notes array",
     description: "Define an array of arrays.",
     concepts: ["JavaScript", "variable", "assignment", "array", "nested"],
-    order: 11,
+    order: 12,
   },
 
   repeat_note: {
@@ -393,7 +424,7 @@ let Content = {
     description:
       "Create a function that takes a string and repeats it n numbers of times",
     concepts: ["JavaScript", "repeat", "strings"],
-    order: 12,
+    order: 13,
   },
 
   find_the_right_element: {
@@ -530,7 +561,7 @@ let Content = {
     title: "Find the right element",
     description: "",
     concepts: ["JavaScript", "querySelectorAll", "getElementById", "id"],
-    order: 13,
+    order: 14,
   },
 
   remove_element: {
@@ -643,7 +674,7 @@ let Content = {
       "innerText",
       "remove",
     ],
-    order: 14,
+    order: 15,
   },
 
   modify_element_innerText: {
@@ -785,7 +816,7 @@ let Content = {
       "innerText",
       "modify",
     ],
-    order: 14,
+    order: 16,
   },
 
   adjust_css_classes: {
@@ -842,7 +873,7 @@ let Content = {
     title: "Adjust CSS classes",
     description: "Set CSS classes for elements based on a given element id.",
     concepts: ["JavaScript", "classList", "childNodes", "getElementById"],
-    order: 15,
+    order: 17,
   },
 
   events: {
@@ -905,7 +936,7 @@ for(let i = 0; i < buttonsIds.length; i++) {
     title: "Modify the elements on mouseenter and mouseleave events",
     description: "",
     concepts: ["JavaScript", "mouseenter", "mouseleave"],
-    order: 16,
+    order: 18,
   },
 
   add_event_listener: {
@@ -938,7 +969,7 @@ for(let i = 0; i < buttonsIds.length; i++) {
     title: "Add event listener",
     description: "Create function and add as an event listener.",
     concepts: ["JavaScript", "addEventListener", "getElementById", "function"],
-    order: 17,
+    order: 19,
   },
 };
 

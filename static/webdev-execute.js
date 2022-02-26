@@ -58,6 +58,9 @@ var rnd = (function () {
       return Array.apply(null, Array(length)).map(function () {
         return self.int(min, max);
       });
-    }
+    },
+    pick: function (arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    },
   };
 })();
