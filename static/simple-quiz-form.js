@@ -37,8 +37,12 @@ function SimpleQuizForm(points, questions, callback) {
     state[qlcIndex].selected = state[qlcIndex].selected.map((old, i) =>
       i === optionIndex ? true : (many ? old : false));
     updateSolved(qlcIndex);
-    console.log(state);
-    callback(state.filter(qlc => qlc.solved).length, state.length);
+    callback(
+      { type: questions[qlcIndex].type, question: questions[qlcIndex].question },
+      questions[qlcIndex].options[optionIndex],
+      state.filter(qlc => qlc.solved).length,
+      state.length,
+    );
   }
 
   return mkElement(

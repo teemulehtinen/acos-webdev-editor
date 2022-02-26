@@ -12,10 +12,7 @@ ACOSWebdev.prototype.extendReset = function () {
     name: 'Execute',
     bindKey: { win: 'Ctrl-Enter', mac: 'Command-Enter' },
     exec: function () {
-      self.log.push({
-        type: 'editor-ctrl-enter',
-        time: new Date().getTime()
-      });
+      self.log({ type: 'editor-ctrl-enter' }, true);
       self.grade();
     }
   });
@@ -23,13 +20,12 @@ ACOSWebdev.prototype.extendReset = function () {
   var js = ace.createEditSession(this.config.initialJs || '');
   js.setMode('ace/mode/javascript');
   js.on('change', function (delta) {
-    self.log.push({
+    self.log({
       type: 'editor-change',
       start: delta.start,
       end: delta.end,
       lines: delta.lines,
-      action: delta.action,
-      time: new Date().getTime()
+      action: delta.action
     });
   });
   this.editor.setSession(js);
@@ -72,24 +68,39 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
     }
   };
   this.editorExecute(function () {
-    cb(self.config.points(self.$element, self.config, accessor));
+    var r = self.config.points(self.$element, self.config, accessor);
+    if (self.config.qlcs && (r.points || 0) >= (self.config.qlcs.requirePoints || 0)) {
+      self.generateQLCs(r.points || 0);
+    }
+    cb(r);
   });
 };
 
 ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
   var $out = $(this.$editorOutput.find('iframe').get(0).contentWindow.document.body);
   $out.find('script').remove();
-  return '<pre><code>' + this.esc(this.editor.getValue()) + '</code></pre><div>' + $out.html() + '</div>';
+  var $qlc = $(this.$element.find('.exercise .qlcs')).clone();
+  $qlc.find('input').prop('disabled', true);
+  return '<pre><code>' + this.esc(this.editor.getValue()) + '</code></pre><div>'
+    + $out.html() + '</div><div>' + $qlc.html() + '</div>';
 };
 
-ACOSWebdev.prototype.postUpdate = function (points, maxPoints) {
-  if (this.config.qlcs) { //&& points >= (this.config.qlcs.requirePoints || 0)) {
-    this.$element.find('.exercise .qlcs').html(SimpleQuizForm(
-      this.config.qlcs.rewardPoints,
-      qlcjs.generate(this.editor.getValue(), this.config.qlcs.request),
-      (solved, total) => console.log(solved, total),
-    ));
-  }
+ACOSWebdev.prototype.generateQLCs = function (points) {
+  var qlcPoints = this.config.qlcs.rewardPoints;
+  var lastPoints = points;
+  var self = this;
+  this.$element.find('.exercise .qlcs').html(SimpleQuizForm(
+    qlcPoints,
+    qlcjs.generate(this.editor.getValue(), this.config.qlcs.request),
+    (question, answer, solved, total) => {
+      self.log({ question: question, answer: answer });
+      var newPoints = points + Math.floor(solved / total * qlcPoints);
+      if (newPoints != lastPoints) {
+        lastPoints = newPoints;
+        self.update(newPoints);
+      }
+    }
+  ));
 };
 
 ACOSWebdev.prototype.esc = function (str) {
