@@ -33,9 +33,9 @@ function SimpleQuizForm(points, questions, callback) {
     qlc.solved = true;
   }
 
-  function reportState(qlcIndex, optionIndex, many) {
+  function reportState(qlcIndex, optionIndex, isChecked, many) {
     state[qlcIndex].selected = state[qlcIndex].selected.map((old, i) =>
-      i === optionIndex ? true : (many ? old : false));
+      i === optionIndex ? isChecked : (many ? old : false));
     updateSolved(qlcIndex);
     callback(
       { type: questions[qlcIndex].type, question: questions[qlcIndex].question },
@@ -62,12 +62,19 @@ function SimpleQuizForm(points, questions, callback) {
             `<input type="${many ? 'checkbox' : 'radio'}" name="qlc${qlcIndex}" value="${i}"> ${o.answer}`
           );
           label.querySelector('input').addEventListener('change', evt => {
-            label.parentNode.querySelectorAll('label').forEach(l => l.removeAttribute('class'));
-            label.setAttribute('class', o.correct ? 'correct' : 'incorrect');
+            const isChecked = evt.target.checked;
+            if (!many) {
+              label.parentNode.querySelectorAll('label').forEach(l => l.removeAttribute('class'));
+            }
+            if (isChecked) {
+              label.setAttribute('class', o.correct ? 'correct' : 'incorrect');
+            } else {
+              label.removeAttribute('class');
+            }
             if (label.querySelector('span.info') === null && o.info) {
               label.appendChild(mkElement('span', { class: 'info' }, o.info));
             }
-            reportState(qlcIndex, i, many);
+            reportState(qlcIndex, i, isChecked, many);
           });
           return label;
         })
