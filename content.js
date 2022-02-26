@@ -138,10 +138,16 @@ let Content = {
       "display.res(halveNumber(a), [a]);\n",
     executeAtStart: false,
     points: function ($element, config, accessor) {
-      var p = accessor.testResults(10, function (i, args, res) {
-        return parseFloat(res) === args[0] / 2 ? 10 : 0;
+      var p = accessor.testResults(8, function (i, args, res) {
+        return parseFloat(res) === args[0] / 2 ? 8 : 0;
       });
       return { points: p };
+    },
+    qlcs: {
+      requirePoints: 8,
+      rewardPoints: 2,
+      request: [{ count: 3, types: ['FunctionName', 'ParameterName', 'ParameterValue'], uniqueTypes: true }],
+      input: [{ functionName: 'halveNumber', parameters: [[4], [8], [16]] }],
     },
     maxPoints: 10,
     title: "declare halveNumber function",

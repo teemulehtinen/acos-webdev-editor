@@ -91,7 +91,7 @@ ACOSWebdev.prototype.generateQLCs = function (points) {
   var self = this;
   this.$element.find('.exercise .qlcs').html(SimpleQuizForm(
     qlcPoints,
-    qlcjs.generate(this.editor.getValue(), this.config.qlcs.request),
+    qlcjs.generate(this.editor.getValue(), this.config.qlcs.request, this.config.qlcs.input),
     (question, answer, solved, total) => {
       self.log({ question: question, answer: answer });
       var newPoints = points + Math.floor(solved / total * qlcPoints);
