@@ -147,7 +147,7 @@ let Content = {
       requirePoints: 8,
       rewardPoints: 2,
       request: [{ count: 3, types: ['FunctionName', 'ParameterName', 'ParameterValue'], uniqueTypes: true }],
-      input: [{ functionName: 'halveNumber', parameters: [[4], [8], [16]] }],
+      input: { functionName: 'halveNumber', arguments: [[4], [8], [16]] },
     },
     maxPoints: 10,
     title: "declare halveNumber function",
@@ -256,7 +256,7 @@ let Content = {
     qlcs: {
       requirePoints: 8,
       rewardPoints: 2,
-      request: [{ count: 3, types: ['LoopEnd', 'VariableDeclaration'], uniqueTypes: true }],
+      request: [{ count: 3, types: ['LoopEnd', 'VariableDeclaration', 'VariableTrace'], uniqueTypes: true }],
     },
     maxPoints: 10,
     title: "While loop",
@@ -313,8 +313,8 @@ let Content = {
     qlcs: {
       requirePoints: 8,
       rewardPoints: 2,
-      request: [{ count: 4, types: ['ParameterName', 'ParameterValue', 'LoopEnd', 'VariableDeclaration'], uniqueTypes: true }],
-      input: [{ functionName: 'countWord', parameters: [['a', ['b','a','c']], ['b',['c','a','b']], ['c', ['a','b','c']]] }],
+      request: [{ count: 3, types: ['ParameterValue', 'LoopEnd', 'VariableDeclaration'], uniqueTypes: true }],
+      input: { functionName: 'countWord', arguments: [['a', ['b','a','c']], ['b', ['c','a','b']]] },
     },
     maxPoints: 10,
     title: "Count word",
@@ -414,10 +414,16 @@ let Content = {
       "display.res(repeatNote(scale[ind], rand), [scale[ind], rand]);\n",
     executeAtStart: false,
     points: function ($element, config, accessor) {
-      let p = accessor.testResults(10, function (i, args, res) {
-        return res === (args[0] + " ").repeat(args[1]).trim() ? 10 : 0;
+      let p = accessor.testResults(8, function (i, args, res) {
+        return res === (args[0] + " ").repeat(args[1]).trim() ? 8 : 0;
       });
       return { points: p };
+    },
+    qlcs: {
+      requirePoints: 8,
+      rewardPoints: 2,
+      request: [{ count: 2, types: ['MethodCall', 'VariableTrace'], uniqueTypes: true }],
+      input: { functionName: 'repeatNote', arguments: [['G#', 3], ['C', 4], ['D#', 4]] },
     },
     maxPoints: 10,
     title: "Repeat note and trim",
