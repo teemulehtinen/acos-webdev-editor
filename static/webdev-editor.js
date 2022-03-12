@@ -81,19 +81,56 @@ ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
   $out.find('script').remove();
   var $qlc = $(this.$element.find('.exercise .qlcs')).clone();
   $qlc.find('input').prop('disabled', true);
+  var checked = this.$element.find('.exercise .qlcs input').map((i, e) => e.checked).get();
+  $qlc.find('input').each((i, e) => {
+    if (checked[i]) {
+      $(e).attr('checked', true);
+    }
+  });
   return '<pre><code>' + this.esc(this.editor.getValue()) + '</code></pre><div>'
     + $out.html() + '</div><div>' + $qlc.html() + '</div>';
 };
 
 ACOSWebdev.prototype.generateQLCs = function (points) {
+
+  function logQlcOption(option) {
+    const data = {
+      qlctype: option.type,
+      answer: option.answer,
+    };
+    if (option.correct) {
+      data.correct = option.correct;
+    }
+    return data;
+  }
+
+  function logQlc(qlc) {
+    return {
+      qlctype: qlc.type,
+      question: qlc.question,
+      options: qlc.options.map(logQlcOption),
+    };
+  }
+
+  var self = this;
+  var qlcContent = qlcjs.generate(
+    this.editor.getValue(),
+    this.config.qlcs.request,
+    this.config.qlcs.input
+  );
+  self.log({ type: 'qlc-init', qlcs: qlcContent.map(logQlc) });
   var qlcPoints = this.config.qlcs.rewardPoints;
   var lastPoints = points;
-  var self = this;
   this.$element.find('.exercise .qlcs').html(SimpleQuizForm(
     qlcPoints,
-    qlcjs.generate(this.editor.getValue(), this.config.qlcs.request, this.config.qlcs.input),
-    (question, answer, solved, total) => {
-      self.log({ question: question, answer: answer });
+    qlcContent,
+    (qlcIndex, optionIndex, isChecked, solved, total) => {
+      const opt = qlcContent[qlcIndex].options[optionIndex];
+      if (isChecked) {
+        self.log({ type: 'qlc-select', qlc: qlcIndex, option: logQlcOption(opt) });
+      } else {
+        self.log({ type: 'qlc-deselect', qlc: qlcIndex, option: logQlcOption(opt) });
+      }
       var newPoints = points + Math.floor(solved / total * qlcPoints);
       if (newPoints != lastPoints) {
         lastPoints = newPoints;

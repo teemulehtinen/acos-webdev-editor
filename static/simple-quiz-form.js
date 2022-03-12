@@ -22,27 +22,41 @@ function SimpleQuizForm(points, questions, callback) {
     solved: false,
   }));
 
-  function updateSolved(qlcIndex) {
-    const qlc = state[qlcIndex];
-    for (let i = 0; i < qlc.correct.length; i += 1) {
-      if (qlc.selected[i] != qlc.correct[i]) {
-        qlc.solved = false;
-        return;
+  function updateSolved(qlcState) {
+    for (let i = 0; i < qlcState.correct.length; i += 1) {
+      if (qlcState.selected[i] != qlcState.correct[i]) {
+        qlcState.solved = false;
+        return false;
       }
     }
-    qlc.solved = true;
+    qlcState.solved = true;
+    return true;
+  }
+
+  function selectOption(qlcIndex, optionIndex, isChecked, many) {
+    const qlcState = state[qlcIndex];
+    qlcState.selected = qlcState.selected.map(
+      (old, i) => i === optionIndex ? isChecked : (many ? old : false)
+    );
+    return updateSolved(qlcState);
   }
 
   function reportState(qlcIndex, optionIndex, isChecked, many) {
-    state[qlcIndex].selected = state[qlcIndex].selected.map((old, i) =>
-      i === optionIndex ? isChecked : (many ? old : false));
-    updateSolved(qlcIndex);
-    callback(
-      { type: questions[qlcIndex].type, question: questions[qlcIndex].question },
-      questions[qlcIndex].options[optionIndex],
-      state.filter(qlc => qlc.solved).length,
-      state.length,
-    );
+    const isSolved = selectOption(qlcIndex, optionIndex, isChecked, many);
+    setTimeout(() => callback(
+      qlcIndex,
+      optionIndex,
+      isChecked,
+      state.filter(qs => qs.solved).length,
+      state.length
+    ));
+    return isSolved;
+  }
+
+  function displayInfo(label, info) {
+    if (info && label.querySelector('span.info') === null) {
+      label.appendChild(mkElement('span', { class: 'info' }, info));
+    }
   }
 
   return mkElement(
@@ -64,17 +78,22 @@ function SimpleQuizForm(points, questions, callback) {
           label.querySelector('input').addEventListener('change', evt => {
             const isChecked = evt.target.checked;
             if (!many) {
-              label.parentNode.querySelectorAll('label').forEach(l => l.removeAttribute('class'));
+              label.parentNode.querySelectorAll('label').forEach(
+                l => l.removeAttribute('class')
+              );
             }
             if (isChecked) {
               label.setAttribute('class', o.correct ? 'correct' : 'incorrect');
             } else {
               label.removeAttribute('class');
             }
-            if (label.querySelector('span.info') === null && o.info) {
-              label.appendChild(mkElement('span', { class: 'info' }, o.info));
+            if (reportState(qlcIndex, i, isChecked, many)) {
+              label.parentNode.querySelectorAll('label').forEach(
+                (l, i) => displayInfo(l, qlc.options[i].info)
+              );
+            } else {
+              displayInfo(label, o.info);
             }
-            reportState(qlcIndex, i, isChecked, many);
           });
           return label;
         })
