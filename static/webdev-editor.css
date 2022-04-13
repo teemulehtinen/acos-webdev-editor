@@ -32,6 +32,11 @@
 .acos-webdev-editor .qlcs .qlc label .info {
   margin-left: 2em;
 }
+.acos-webdev-editor .acos-replay-note {
+  background: rgba(230, 230, 230, 0.3);
+  color: white;
+  padding: 1em;
+}
 
 body.execute {
   background-color: gainsboro;

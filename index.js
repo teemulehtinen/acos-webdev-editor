@@ -32,6 +32,10 @@ Package.register = function (handlers, app, conf) {
 
 Package.initialize = function (req, params, handlers, cb) {
   let config = content[params.name];
+  if (params.name == 'replay') {
+    config = content[req.body.key];
+    config.replay = JSON.parse(decodeURIComponent(req.body.log));
+  }
   if (config) {
     let templateDir = baseDir + '/templates/';
     nj.configure(templateDir, { autoescape: false });
