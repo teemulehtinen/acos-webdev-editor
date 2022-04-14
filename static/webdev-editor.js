@@ -35,11 +35,6 @@ ACOSWebdev.prototype.extendReset = function () {
   if (this.config.executeAtStart) {
     this.extendGrade(undefined, function (r) {});
   }
-
-  if (this.config.replay) {
-    this.replayIndex = 0;
-    this.replayTo(this.config.replay[0].time);
-  }
 };
 
 ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
@@ -193,84 +188,26 @@ ACOSWebdev.prototype.editorExecute = function (cb) {
   $iframe.attr('src', 'javascript:window["contents"]');
 };
 
-ACOSWebdev.prototype.replayTo = function (toTime) {
-  if (this.replayTimeout) {
-    clearTimeout(this.replayTimeout);
-  }
-  let event = this.config.replay[this.replayIndex];
-  if (toTime > event.time) {
-    event = this.config.replay[this.replayIndex + 1];
-    while (event && event.time <= toTime) {
-      this.replayEventForward(event);
-      this.replayIndex += 1;
-      event = this.config.replay[this.replayIndex + 1];
-    }
-  } else if (toTime < event.time) {
-    event = this.config.replay[this.replayIndex - 1];
-    while (event && event.time >= toTime) {
-      this.replayEventBackward(event);
-      this.replayIndex -= 1;
-      event = this.config.replay[this.replayIndex - 1];
-    }
-  }
-  event = this.config.replay[this.replayIndex + 1];
-  if (event) {
-    let delay = event.time - toTime;
-    if (delay > 10000) {
-      let s = Math.round(delay / 1000);
-      if (s < 60) {
-        this.displayNote(`${s} sec later...`, '50%', '20%');
-      } else {
-        let m = s / 60;
-        if (m < 60) {
-          this.displayNote(`${m.toFixed(1)} min later...`, '50%', '20%');
-        } else {
-          this.displayNote(`${(m / 60).toFixed(1)} hours later...`, '50%', '20%');
-        }
-      }
-      delay = 5000;
-    }
-    this.replayTimeout = setTimeout(() => this.replayTo(event.time), delay);
-  }
-};
-
-ACOSWebdev.prototype.replayEventForward = function (event) {
-  this.removeNote();
+ACOSWebdev.prototype.extendReplayEvent = function (event, backward) {
   switch (event.type) {
-    case 'mouseClick':
-      this.displayNote('click', event.x, event.y);
-      break;
     case 'editor-change':
       let session = this.editor.getSession();
       switch (event.action) {
         case 'insert':
-          session.insert(event.start, event.lines.join('\n'));
-          break;
+          if (backward) {
+            session.remove({ start: event.start, end: event.end });
+          } else {
+            session.insert(event.start, event.lines.join('\n'));
+          }
+          return true;
         case 'remove':
-          session.remove({ start: event.start, end: event.end });
-          break;
-        default:
-          console.log('replay', event);
+          if (backward) {
+            session.insert(event.start, event.lines.join('\n'));
+          } else {
+            session.remove({ start: event.start, end: event.end });
+          }
+          return true;
       }
-      break;
-    default:
-      console.log('replay', event);
   }
+  return false;
 };
-
-ACOSWebdev.prototype.replayEventBackward = function (event) {
-  console.log('TODO backward event', event);
-};
-
-ACOSWebdev.prototype.displayNote = function (note, x, y) {
-  this.$element.append($('<div class="acos-replay-note"></div>').html(note).css({
-    position: 'absolute',
-    left: typeof x === 'number' ? `${x}px` : x,
-    top: typeof y === 'number' ? `${y}px` : y,
-    'z-index': 10,
-  }));
-};
-
-ACOSWebdev.prototype.removeNote = function () {
-  this.$element.find('.acos-replay-note').remove();
-}
