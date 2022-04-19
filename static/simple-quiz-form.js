@@ -73,7 +73,7 @@ function SimpleQuizForm(points, questions, callback) {
           const label = mkElement(
             'label',
             {},
-            `<input type="${many ? 'checkbox' : 'radio'}" name="qlc${qlcIndex}" value="${i}"> ${o.answer}`
+            `<input type="${many ? 'checkbox' : 'radio'}" name="qlc${qlcIndex}" value="${o.answer}"> ${o.answer}`
           );
           label.querySelector('input').addEventListener('change', evt => {
             const isChecked = evt.target.checked;
