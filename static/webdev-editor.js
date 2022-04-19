@@ -69,7 +69,7 @@ ACOSWebdev.prototype.extendGrade = function (eventOrMutations, cb) {
   };
   this.editorExecute(function () {
     var r = self.config.points(self.$element, self.config, accessor);
-    if (self.config.qlcs && (r.points || 0) >= (self.config.qlcs.requirePoints || 0)) {
+    if (!self.config.replay && self.config.qlcs && (r.points || 0) >= (self.config.qlcs.requirePoints || 0)) {
       self.generateQLCs(r.points || 0);
     }
     cb(r);
@@ -91,8 +91,7 @@ ACOSWebdev.prototype.extendProtocolFeedback = function (feedback) {
     + $out.html() + '</div><div>' + $qlc.html() + '</div>';
 };
 
-ACOSWebdev.prototype.generateQLCs = function (points) {
-
+ACOSWebdev.prototype.generateQLCs = function (points, replay) {
   function logQlcOption(option) {
     const data = {
       qlctype: option.type,
@@ -103,22 +102,11 @@ ACOSWebdev.prototype.generateQLCs = function (points) {
     }
     return data;
   }
-
-  function logQlc(qlc) {
-    return {
-      qlctype: qlc.type,
-      question: qlc.question,
-      options: qlc.options.map(logQlcOption),
-    };
-  }
-
   var self = this;
-  var qlcContent = qlcjs.generate(
-    this.editor.getValue(),
-    this.config.qlcs.request,
-    this.config.qlcs.input
-  );
-  self.log({ type: 'qlc-init', qlcs: qlcContent.map(logQlc) });
+  var qlcContent = replay
+    ? replay.map(q => ({ type: q.qlctype, question: q.question, options: q.options.map(o => ({ type: o.qlctype, answer: o.answer, correct: o.correct, info: 'Info not logged' }))}))
+    : qlcjs.generate(this.editor.getValue(), this.config.qlcs.request, this.config.qlcs.input);
+  self.log({ type: 'qlc-init', qlcs: qlcContent.map(q => ({ qlctype: q.type, question: q.question, options: q.options.map(logQlcOption) })) });
   var qlcPoints = this.config.qlcs.rewardPoints;
   var lastPoints = points;
   this.$element.find('.exercise .qlcs').html(SimpleQuizForm(
@@ -208,6 +196,15 @@ ACOSWebdev.prototype.extendReplayEvent = function (event, backward) {
           }
           return true;
       }
+    case 'qlc-init':
+      this.generateQLCs(this.config.qlcs.requirePoints || 0, event.qlcs);
+      return true;
+    case 'qlc-select':
+      const o = $(`.acos-webdev-editor .qlcs label:has(input[name="qlc${event.qlc}"]):contains(${event.option.answer})`);
+      o.click();
+      return true;
+    case 'grade':
+      return event.points > (this.config.qlcs.requirePoints || 0);
   }
   return false;
 };
