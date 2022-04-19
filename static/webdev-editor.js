@@ -200,7 +200,7 @@ ACOSWebdev.prototype.extendReplayEvent = function (event, backward) {
       this.generateQLCs(this.config.qlcs.requirePoints || 0, event.qlcs);
       return true;
     case 'qlc-select':
-      $(`.acos-webdev-editor .qlcs input[name="qlc${event.qlc}"][value="${event.option.answer}"]`).click();
+      $(`.acos-webdev-editor .qlcs input[name="qlc${event.qlc}"][value="${encodeURIComponent(event.option.answer)}"]`).click();
       return true;
     case 'grade':
       if (this.config.qlcs) {
