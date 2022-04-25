@@ -210,3 +210,13 @@ ACOSWebdev.prototype.extendReplayEvent = function (event, backward) {
   }
   return false;
 };
+
+ACOSWebdev.prototype.extendReplayEventColor = function (event) {
+  if (event.type === 'editor-change') {
+    return '#16a085';
+  }
+  if (event.type === 'qlc-select') {
+    return event.option.correct ? '#ffff00' : '#fa8072';
+  }
+  return undefined;
+};
