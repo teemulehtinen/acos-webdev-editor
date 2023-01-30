@@ -12,7 +12,7 @@ questionnaires about the program that the student creates (QLCs).
 
 The system logs all student activity in the task so that their work can be
 validated. This also opens up possibilities for research designs that examine
-the program writing process. See [an example of a log playback](test-playback.html).
+the program writing process. See [an example of a log playback](https://htmlpreview.github.io/?https://github.com/teemulehtinen/acos-webdev-editor/blob/main/test-playback.html).
 
 ## Exercise samples
 
